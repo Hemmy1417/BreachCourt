@@ -34,7 +34,7 @@
    "reference": "0xa11ce",
    "settle": true,
    "summary": "Called emergencyWithdraw from an account with no GUARDIAN role and received the vault's whole balance.",
-   "wallet": "alice"
+   "wallet": "a01"
   },
   {
    "case": "EX02",
@@ -58,13 +58,13 @@
     }
    ],
    "expect_impact": "",
-   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_reason": "ATTACK_NOT_SHOWN",
    "expect_verdict": "EXPLOIT_REJECTED",
-   "note": "the attempt reverted and the balance is unchanged: the negative path, and the one the run contests to show a second reading of the same bytes",
+   "note": "the attempt reverted and nothing changed, so the evidence does not show an attack that ran at all - the reason the panel is instructed to give, and the case the run contests to show a second reading of the same bytes",
    "reference": "0xdead01",
    "settle": true,
    "summary": "Called emergencyWithdraw from an account with no role; the guard held and nothing moved.",
-   "wallet": "bob"
+   "wallet": "a02"
   },
   {
    "case": "EX03",
@@ -93,7 +93,7 @@
    "reference": "0xc0ffee",
    "settle": true,
    "summary": "Two readings of the same run disagree about whether value left the vault.",
-   "wallet": "carol"
+   "wallet": "a03"
   },
   {
    "case": "EX04",
@@ -122,7 +122,7 @@
    "reference": "0xa11ce",
    "settle": false,
    "summary": "The evidence for this attempt is no longer published.",
-   "wallet": "dave"
+   "wallet": "a04"
   },
   {
    "case": "EX05",
@@ -151,7 +151,7 @@
    "reference": "0xa11ce",
    "settle": false,
    "summary": "The declared digest does not match the document that is served.",
-   "wallet": "erin"
+   "wallet": "a05"
   },
   {
    "case": "EX06",
@@ -180,7 +180,7 @@
    "reference": "0xa11ce",
    "settle": false,
    "summary": "The state document carries a line addressed to whoever adjudicates.",
-   "wallet": "alice"
+   "wallet": "a06"
   },
   {
    "case": "EX07",
@@ -202,7 +202,7 @@
    "reference": "0xa11ce",
    "settle": false,
    "summary": "Everything rests on one publisher's document.",
-   "wallet": "bob"
+   "wallet": "a07"
   },
   {
    "case": "EX08",
@@ -231,7 +231,36 @@
    "reference": "0xa11ce",
    "settle": false,
    "summary": "The documents are live pages whose bytes nobody bound.",
-   "wallet": "carol"
+   "wallet": "a08"
+  },
+  {
+   "case": "EX11",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/within-claim-trace.json",
+     "sha256": "9c0a751ee9f4c4b93e41a660573db3aab496132da0ada3ceeef60dbb2a05e17a"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "mirror",
+     "path": "evidence/within-claim-state.html",
+     "sha256": "9f7698ea52ac247fd2abf3cb6a5fa632b7de32411d588a340389c324d858a6f9"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_verdict": "EXPLOIT_REJECTED",
+   "note": "the call ran and the access check was weak, but the caller received exactly its recorded claim: the invariant the challenge names was not violated, which is the distinction the primitive exists to draw",
+   "reference": "0x0c1a1m",
+   "settle": false,
+   "summary": "Called emergencyWithdraw from an account with no role; the call completed and paid out the recorded claim.",
+   "wallet": "a11"
   },
   {
    "case": "EX09",
@@ -260,7 +289,7 @@
    "reference": "0xb0b0b0",
    "settle": false,
    "summary": "The trace is of a different deployment entirely.",
-   "wallet": "dave"
+   "wallet": "a09"
   },
   {
    "case": "EX10",
@@ -283,13 +312,13 @@
     }
    ],
    "expect_impact": "",
-   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_reason": "ATTACK_NOT_SHOWN",
    "expect_verdict": "EXPLOIT_REJECTED",
-   "note": "a challenge that asks for one origin still asks for the prohibited outcome; an ordinary deposit is not it",
+   "note": "a challenge that asks for one origin still asks for the attack it describes; an ordinary deposit is not it",
    "reference": "0xfeed01",
    "settle": false,
    "summary": "A deposit that moved 40 units, offered as an exploit.",
-   "wallet": "erin"
+   "wallet": "a10"
   }
  ],
  "contest_case": "EX02",

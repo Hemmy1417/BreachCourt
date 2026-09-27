@@ -18,8 +18,8 @@ from genlayer_py import create_account
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 KEYS = ROOT / ".data" / "demo_wallets.json"
 ADDRESSES = ROOT / "fixtures" / "wallets.json"
-NAMES = ("publisher", "keeper", "alice", "bob", "carol", "dave", "erin",
-         "stranger")
+NAMES = ("publisher", "keeper", "stranger") + tuple(
+    "a" + str(i).zfill(2) for i in range(1, 13))
 
 
 def main():

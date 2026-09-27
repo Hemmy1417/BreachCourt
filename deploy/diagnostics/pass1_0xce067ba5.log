@@ -1,0 +1,38 @@
+22:01:33 contract 0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D phase full
+22:01:33 phase challenges
+22:01:33   challenge:vaultlite: publish_challenge as publisher
+22:02:12     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:02:14     vaultlite -> BC-000001
+22:02:14   challenge:vaultlite-single: publish_challenge as publisher
+22:02:53     FINALIZED/SUCCESS votes agree,idle,idle,agree,agree
+22:02:55     vaultlite-single -> BC-000002
+22:02:55 phase cases
+22:02:57   file:lapse: submit_attempt as stranger
+22:03:41     FINALIZED/SUCCESS votes agree,agree,idle,agree,idle
+22:03:44   file:EX01: submit_attempt as alice
+22:04:25     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+22:04:27   resolve:EX01: resolve as keeper
+22:05:59     FINALIZED/SUCCESS votes agree,agree,agree,idle,idle
+22:06:03     EX01: EXPLOIT_CONFIRMED/EXPLOIT_SHOWN/HIGH HELD
+22:06:05   file:EX02: submit_attempt as bob
+22:06:48     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+22:06:50   resolve:EX02: resolve as keeper
+22:08:39     FINALIZED/SUCCESS votes agree,idle,idle,agree,agree
+22:08:42     EX02: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ MISSED
+22:08:44   file:EX03: submit_attempt as carol
+22:09:23     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:09:24   resolve:EX03: resolve as keeper
+22:10:31     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+22:10:35     EX03: INCONCLUSIVE/EVIDENCE_CONTRADICTORY/ HELD
+22:10:37   file:EX04: submit_attempt as dave
+22:11:15     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:11:17   resolve:EX04: resolve as keeper
+22:12:01     FINALIZED/SUCCESS votes agree,agree,idle,agree,idle
+22:12:04     EX04: EVIDENCE_UNAVAILABLE/NO_EVIDENCE_READABLE/ HELD
+22:12:06   file:EX05: submit_attempt as erin
+22:12:46     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+22:12:48   resolve:EX05: resolve as keeper
+22:13:32     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+22:13:36     EX05: EVIDENCE_UNAVAILABLE/EVIDENCE_DIGEST_MISMATCH/ HELD
+22:13:38   file:EX06: submit_attempt as alice
+22:14:16     FINALIZED/ERROR votes idle,agree,idle,agree,agree

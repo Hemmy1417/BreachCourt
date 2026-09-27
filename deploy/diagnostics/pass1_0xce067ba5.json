@@ -1,0 +1,507 @@
+{
+ "address": "0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D",
+ "deadline": "2026-09-28T03:01:27Z",
+ "finished_at": "2026-09-27T21:14:16Z",
+ "order": [
+  "challenge:vaultlite",
+  "challenge:vaultlite-single",
+  "file:lapse",
+  "file:EX01",
+  "resolve:EX01",
+  "file:EX02",
+  "resolve:EX02",
+  "file:EX03",
+  "resolve:EX03",
+  "file:EX04",
+  "resolve:EX04",
+  "file:EX05",
+  "resolve:EX05",
+  "file:EX06"
+ ],
+ "raw_base": "https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/",
+ "started_at": "2026-09-27T21:01:27Z",
+ "steps": {
+  "challenge:vaultlite": {
+   "args": [
+    "{\"contest_window\": 900, \"evidence_domains\": [\"raw.githubusercontent.com\", \"cdn.jsdelivr.net\"], \"evidence_requirements\": [{\"description\": \"The evidence shows which account made the call and that it hol... (1521 characters)"
+   ],
+   "at": "2026-09-27T21:02:14Z",
+   "challenge_id": "BC-000001",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "publish_challenge",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "challenge:vaultlite",
+   "tx": "0x8a966934558df78a8e22154a7af6794a4987e808aa6a74d735a987d6fe95e703",
+   "votes": [
+    "agree",
+    "agree",
+    "agree",
+    "agree",
+    "agree"
+   ],
+   "wallet": "publisher"
+  },
+  "challenge:vaultlite-single": {
+   "args": [
+    "{\"contest_window\": 900, \"evidence_domains\": [\"raw.githubusercontent.com\", \"cdn.jsdelivr.net\"], \"evidence_requirements\": [{\"description\": \"The evidence shows which account made the call and that it hol... (1536 characters)"
+   ],
+   "at": "2026-09-27T21:02:55Z",
+   "challenge_id": "BC-000002",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "publish_challenge",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "challenge:vaultlite-single",
+   "tx": "0x13fc1415dfa2f327fdc2f61a4353a59c5649a21793589527372a7fb11d03ea97",
+   "votes": [
+    "agree",
+    "idle",
+    "idle",
+    "agree",
+    "agree"
+   ],
+   "wallet": "publisher"
+  },
+  "file:EX01": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "Called emergencyWithdraw from an account with no GUARDIAN role and received the vault's whole balance.",
+    "0xa11ce",
+    "HIGH",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/attack-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"9ac7473c37ca0a4127d2bc6cfc... (830 characters)"
+   ],
+   "at": "2026-09-27T21:04:27Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX01",
+   "submission_id": "AT-000002",
+   "tx": "0xb810b3acb9ff0be4185d863c5b696ae47f1daae1fe33071ab1d7242dade2761c",
+   "votes": [
+    "idle",
+    "agree",
+    "agree",
+    "idle",
+    "agree"
+   ],
+   "wallet": "alice"
+  },
+  "file:EX02": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "Called emergencyWithdraw from an account with no role; the guard held and nothing moved.",
+    "0xdead01",
+    "HIGH",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/reverted-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"162b96f1f305a47dca363e6a... (555 characters)"
+   ],
+   "at": "2026-09-27T21:06:50Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX02",
+   "submission_id": "AT-000003",
+   "tx": "0xdd1e45b83c41584ca19307e469b17c1f6daee36651f684cc48a4ac4e9e91ad92",
+   "votes": [
+    "idle",
+    "idle",
+    "agree",
+    "agree",
+    "agree"
+   ],
+   "wallet": "bob"
+  },
+  "file:EX03": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "Two readings of the same run disagree about whether value left the vault.",
+    "0xc0ffee",
+    "HIGH",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/conflicting-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"6af068423198d999f0a45... (560 characters)"
+   ],
+   "at": "2026-09-27T21:09:24Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX03",
+   "submission_id": "AT-000004",
+   "tx": "0xdbee80000961a28ca48796fe6b7a11ce2fb180df7417b5b8b9ad597fa2f8c207",
+   "votes": [
+    "agree",
+    "agree",
+    "agree",
+    "agree",
+    "agree"
+   ],
+   "wallet": "carol"
+  },
+  "file:EX04": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "The evidence for this attempt is no longer published.",
+    "0xa11ce",
+    "HIGH",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/missing-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"1111111111111111111111111... (530 characters)"
+   ],
+   "at": "2026-09-27T21:11:17Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX04",
+   "submission_id": "AT-000005",
+   "tx": "0x6a9001c82bcf0c80c5859168a93388a63a0b8221dbaa49846fcac9bca017fa0c",
+   "votes": [
+    "agree",
+    "agree",
+    "agree",
+    "agree",
+    "agree"
+   ],
+   "wallet": "dave"
+  },
+  "file:EX05": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "The declared digest does not match the document that is served.",
+    "0xa11ce",
+    "HIGH",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/attack-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"33333333333333333333333333... (533 characters)"
+   ],
+   "at": "2026-09-27T21:12:48Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX05",
+   "submission_id": "AT-000006",
+   "tx": "0x76c2ecfd11e2277f1aa533046590365faad0e234624fe17b7705452409528690",
+   "votes": [
+    "idle",
+    "agree",
+    "agree",
+    "agree",
+    "idle"
+   ],
+   "wallet": "erin"
+  },
+  "file:EX06": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "The state document carries a line addressed to whoever adjudicates.",
+    "0xa11ce",
+    "CRITICAL",
+    "[{\"url\": \"https://raw.githubusercontent.com/Hemmy1417/BreachCourt/e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/attack-trace.json\", \"kind\": \"PINNED\", \"sha256\": \"9ac7473c37ca0a4127d2bc6cfc... (552 characters)"
+   ],
+   "at": "2026-09-27T21:14:16Z",
+   "error": "{\"status\": \"rollback\", \"payload\": \"[EXPECTED] this account already filed AT-000002 against this challenge\"}",
+   "kind": "write",
+   "leader_execution": "ERROR",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:EX06",
+   "tx": "0x6e2ea6619074b1fb1df022b46447bbf8b0ddbd77f318724eebcb969634f65f5e",
+   "votes": [
+    "idle",
+    "agree",
+    "idle",
+    "agree",
+    "agree"
+   ],
+   "wallet": "alice"
+  },
+  "file:lapse": {
+   "args": [
+    "BC-000001",
+    "90f6f539af24d1c5e74354ebdbdc03744a0a2355f03164a5d7be7abcc9b43fb1",
+    "An attempt nobody will resolve.",
+    "0xnever",
+    "LOW",
+    "[{\"url\": \"https://cdn.jsdelivr.net/gh/Hemmy1417/BreachCourt@e014836477b3e48d35c2f3d26f551fdc8726f1fc/fixtures/evidence/invariants.html\", \"kind\": \"LIVE\", \"sha256\": \"\", \"label\": \"The published invariant... (203 characters)"
+   ],
+   "at": "2026-09-27T21:03:43Z",
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "method": "submit_attempt",
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "file:lapse",
+   "submission_id": "AT-000001",
+   "tx": "0xb2c1264124e022af0741e6d19bf7922de46bfba1d48744fa872909b01de10f57",
+   "votes": [
+    "agree",
+    "agree",
+    "idle",
+    "agree",
+    "idle"
+   ],
+   "wallet": "stranger"
+  },
+  "resolve:EX01": {
+   "args": [
+    "AT-000002"
+   ],
+   "at": "2026-09-27T21:06:03Z",
+   "bytes_bound": true,
+   "consumer_view": {
+    "confirmed": true,
+    "final": false,
+    "found": true,
+    "impact": "HIGH",
+    "submission_id": "AT-000002",
+    "verdict": "EXPLOIT_CONFIRMED"
+   },
+   "evidence_class": "EVIDENCE_REACHABLE",
+   "expected_impact": "HIGH",
+   "expected_reason": "EXPLOIT_SHOWN",
+   "expected_verdict": "EXPLOIT_CONFIRMED",
+   "held": true,
+   "independent_origins": [
+    "cdn.jsdelivr.net",
+    "raw.githubusercontent.com"
+   ],
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "markers": [],
+   "method": "resolve",
+   "note": "the trace and the state come from two independent origins, both bound to their bytes, and together they show an unroled caller taking the whole balance",
+   "observed_impact": "HIGH",
+   "observed_reason": "EXPLOIT_SHOWN",
+   "observed_verdict": "EXPLOIT_CONFIRMED",
+   "panel_state": "ASSESSED",
+   "resolution_id": "RS-000001",
+   "round": 1,
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "resolve:EX01",
+   "submission_id": "AT-000002",
+   "supersedes": "",
+   "tx": "0xd6311d7595a15e49dad82e3827c90b6fb653790cd84aa8821b13258ed00e8407",
+   "votes": [
+    "agree",
+    "agree",
+    "agree",
+    "idle",
+    "idle"
+   ],
+   "wallet": "keeper"
+  },
+  "resolve:EX02": {
+   "args": [
+    "AT-000003"
+   ],
+   "at": "2026-09-27T21:08:42Z",
+   "bytes_bound": true,
+   "consumer_view": {
+    "confirmed": false,
+    "final": false,
+    "found": true,
+    "impact": "",
+    "submission_id": "AT-000003",
+    "verdict": "EXPLOIT_REJECTED"
+   },
+   "evidence_class": "EVIDENCE_REACHABLE",
+   "expected_impact": "",
+   "expected_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expected_verdict": "EXPLOIT_REJECTED",
+   "held": false,
+   "independent_origins": [
+    "cdn.jsdelivr.net",
+    "raw.githubusercontent.com"
+   ],
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "markers": [],
+   "method": "resolve",
+   "note": "the attempt reverted and the balance is unchanged: the negative path, and the one the run contests to show a second reading of the same bytes",
+   "observed_impact": "",
+   "observed_reason": "ATTACK_NOT_SHOWN",
+   "observed_verdict": "EXPLOIT_REJECTED",
+   "panel_state": "ASSESSED",
+   "resolution_id": "RS-000002",
+   "round": 1,
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "resolve:EX02",
+   "submission_id": "AT-000003",
+   "supersedes": "",
+   "tx": "0x0436b337bc547ada508d2b2acbdf927906f71fa81d0b2e57b5591e5dadf34d85",
+   "votes": [
+    "agree",
+    "idle",
+    "idle",
+    "agree",
+    "agree"
+   ],
+   "wallet": "keeper"
+  },
+  "resolve:EX03": {
+   "args": [
+    "AT-000004"
+   ],
+   "at": "2026-09-27T21:10:35Z",
+   "bytes_bound": true,
+   "consumer_view": {
+    "confirmed": false,
+    "final": false,
+    "found": true,
+    "impact": "",
+    "submission_id": "AT-000004",
+    "verdict": "INCONCLUSIVE"
+   },
+   "evidence_class": "EVIDENCE_CONTRADICTORY",
+   "expected_impact": "",
+   "expected_reason": "EVIDENCE_CONTRADICTORY",
+   "expected_verdict": "INCONCLUSIVE",
+   "held": true,
+   "independent_origins": [
+    "cdn.jsdelivr.net",
+    "raw.githubusercontent.com"
+   ],
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "markers": [],
+   "method": "resolve",
+   "note": "contradictory documents are never a confirmation",
+   "observed_impact": "",
+   "observed_reason": "EVIDENCE_CONTRADICTORY",
+   "observed_verdict": "INCONCLUSIVE",
+   "panel_state": "ASSESSED",
+   "resolution_id": "RS-000003",
+   "round": 1,
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "resolve:EX03",
+   "submission_id": "AT-000004",
+   "supersedes": "",
+   "tx": "0x3ccb20a0c70f581bf69c619178bd5ef31dbf24b50cd4d82fa821dff5ad6d3e1a",
+   "votes": [
+    "idle",
+    "idle",
+    "agree",
+    "agree",
+    "agree"
+   ],
+   "wallet": "keeper"
+  },
+  "resolve:EX04": {
+   "args": [
+    "AT-000005"
+   ],
+   "at": "2026-09-27T21:12:04Z",
+   "bytes_bound": true,
+   "consumer_view": {
+    "confirmed": false,
+    "final": false,
+    "found": true,
+    "impact": "",
+    "submission_id": "AT-000005",
+    "verdict": "EVIDENCE_UNAVAILABLE"
+   },
+   "evidence_class": "EVIDENCE_UNAVAILABLE",
+   "expected_impact": "",
+   "expected_reason": "NO_EVIDENCE_READABLE",
+   "expected_verdict": "EVIDENCE_UNAVAILABLE",
+   "held": true,
+   "independent_origins": [],
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "markers": [],
+   "method": "resolve",
+   "note": "a failed fetch is never evidence that an exploit succeeded",
+   "observed_impact": "",
+   "observed_reason": "NO_EVIDENCE_READABLE",
+   "observed_verdict": "EVIDENCE_UNAVAILABLE",
+   "panel_state": "SKIPPED",
+   "resolution_id": "RS-000004",
+   "round": 1,
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "resolve:EX04",
+   "submission_id": "AT-000005",
+   "supersedes": "",
+   "tx": "0xed63dc111b6032c751eb190a2fc6b813f7b9693d0e71a4a9559a41dbd98b132f",
+   "votes": [
+    "agree",
+    "agree",
+    "idle",
+    "agree",
+    "idle"
+   ],
+   "wallet": "keeper"
+  },
+  "resolve:EX05": {
+   "args": [
+    "AT-000006"
+   ],
+   "at": "2026-09-27T21:13:36Z",
+   "bytes_bound": true,
+   "consumer_view": {
+    "confirmed": false,
+    "final": false,
+    "found": true,
+    "impact": "",
+    "submission_id": "AT-000006",
+    "verdict": "EVIDENCE_UNAVAILABLE"
+   },
+   "evidence_class": "EVIDENCE_UNAVAILABLE",
+   "expected_impact": "",
+   "expected_reason": "EVIDENCE_DIGEST_MISMATCH",
+   "expected_verdict": "EVIDENCE_UNAVAILABLE",
+   "held": true,
+   "independent_origins": [],
+   "kind": "write",
+   "leader_execution": "SUCCESS",
+   "markers": [],
+   "method": "resolve",
+   "note": "bytes that are not the bytes that were filed fail closed, in code, with no panel convened",
+   "observed_impact": "",
+   "observed_reason": "EVIDENCE_DIGEST_MISMATCH",
+   "observed_verdict": "EVIDENCE_UNAVAILABLE",
+   "panel_state": "SKIPPED",
+   "resolution_id": "RS-000005",
+   "round": 1,
+   "rounds": 1,
+   "status": "FINALIZED",
+   "step": "resolve:EX05",
+   "submission_id": "AT-000006",
+   "supersedes": "",
+   "tx": "0x0fa93666656a9854f8a991c9df00f40633d9a932f515cd8f90737c0c514dcb23",
+   "votes": [
+    "idle",
+    "agree",
+    "agree",
+    "idle",
+    "agree"
+   ],
+   "wallet": "keeper"
+  }
+ },
+ "summary": {
+  "missed": [
+   "resolve:EX02"
+  ],
+  "outcomes_checked": 5,
+  "outcomes_held": 4,
+  "refusals": 0,
+  "steps": 14,
+  "transactions": 14
+ }
+}
