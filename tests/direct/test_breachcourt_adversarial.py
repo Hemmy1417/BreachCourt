@@ -699,3 +699,90 @@ def test_the_contract_source_is_ascii_with_lf_endings():
            / "breachcourt.py").read_bytes()
     assert raw.decode("ascii") and b"\r" not in raw
     assert raw.startswith(b"# v0.1.0\n# { \"Depends\": \"py-genlayer:1jb45aa8")
+
+
+# -- what the first sweep left unpinned ----------------------------------------
+
+def test_a_body_that_does_not_decode_is_invalid_content(court, direct_vm, direct_alice,
+                                                        direct_bob):
+    challenge_id, challenge_hash = _ready(court, direct_vm, direct_alice)
+    broken = {"body": b"\xff\xfe\x00\x81 not text at all", "status": 200,
+              "content_type": "text/html; charset=utf-8"}
+    s.serve_all(direct_vm, {s.TRACE_URL: broken, s.STATE_URL: broken,
+                            s.DOCS_URL: broken})
+    items = [{"url": s.TRACE_URL, "kind": "LIVE", "label": "Trace", "sha256": ""},
+             {"url": s.STATE_URL, "kind": "LIVE", "label": "State", "sha256": ""}]
+    _sid, resolution_id = s.resolved(court, direct_vm, direct_bob, challenge_id,
+                                     challenge_hash, subjects={}, items=items)
+    record = court.get_resolution(resolution_id)["resolution"]
+    assert [x["status"] for x in record["sources"]] == ["INVALID_CONTENT"] * 2
+    assert record["verdict"] == "EVIDENCE_UNAVAILABLE"
+    assert record["reason_code"] == "NO_EVIDENCE_READABLE"
+
+
+def test_a_document_with_nothing_a_reader_can_see_is_invalid_content(court, direct_vm,
+                                                                    direct_alice,
+                                                                    direct_bob):
+    challenge_id, challenge_hash = _ready(court, direct_vm, direct_alice)
+    hidden = ("<html><head><style>p{color:red}</style>"
+              "<script>var a = \"" + s.ATTACK_LINE + "\";</script></head><body>"
+              "<script>document.write(\"nothing\")</script></body></html>")
+    s.serve_all(direct_vm, {s.STATE_URL: hidden})
+    items = [s.item(s.TRACE_URL, s.TRACE, "Trace"),
+             s.item(s.STATE_URL, hidden, "State")]
+    said = s.confirmed_said()
+    said["PROHIBITED_STATE"] = s.said("UNCLEAR", [])
+    _sid, resolution_id = s.resolved(court, direct_vm, direct_bob, challenge_id,
+                                     challenge_hash, subjects=said, items=items)
+    record = court.get_resolution(resolution_id)["resolution"]
+    state = [x for x in record["sources"] if x["evidence_id"] == "E2"][0]
+    assert state["status"] == "INVALID_CONTENT"
+
+
+def test_a_mismatched_item_contributes_no_markers(court, direct_vm, direct_alice,
+                                                  direct_bob):
+    """A document that both fails its digest and carries an injection must leave the
+    round on the digest, in code. If a mismatched item still contributed markers,
+    the marker list would name an unreadable item and the round would die at the
+    gate instead of recording a clean fail-closed verdict."""
+    challenge_id, challenge_hash = _ready(court, direct_vm, direct_alice)
+    s.serve_all(direct_vm)
+    items = s.standard_items()          # digests taken over the clean documents
+    submission_id = s.filed(court, direct_vm, direct_bob, challenge_id, challenge_hash,
+                            items=items)
+    direct_vm.clear_mocks()
+    poisoned = s.page("VaultLite state after 0xa11ce", [s.STATE_LINE, s.INJECTION])
+    s.serve_all(direct_vm, {s.STATE_URL: poisoned})
+    s.panel(direct_vm, s.confirmed_said())
+    record = court.get_resolution(court.resolve(submission_id))["resolution"]
+    assert record["verdict"] == "EVIDENCE_UNAVAILABLE"
+    assert record["reason_code"] == "EVIDENCE_DIGEST_MISMATCH"
+    assert record["markers"] == []
+
+
+def test_a_spliced_quote_is_refused_by_the_gate_even_though_it_grounds(court, direct_vm,
+                                                                      direct_alice,
+                                                                      direct_bob):
+    """Grounding walks an ellipsis-separated quote part by part, so a splice of two
+    real passages does ground. The gate refuses it anyway."""
+    challenge_id, challenge_hash = _ready(court, direct_vm, direct_alice)
+    s.serve_all(direct_vm)
+    s.resolved(court, direct_vm, direct_bob, challenge_id, challenge_hash)
+    payload = s.leader_payload(direct_vm)
+    s.finding_in(payload, "ATTACK_EXECUTED")["quotes"] = [
+        {"evidence_id": "E1", "text": "Transaction 0xa11ce called ... without reverting"}]
+    assert s.replay(direct_vm, payload) is False
+
+
+def test_a_quote_is_grounded_in_this_nodes_own_bytes(court, direct_vm, direct_alice,
+                                                     direct_bob):
+    """A forged quote on a reading the verdict does not rest on changes nothing in
+    the consequence, so only re-grounding against this node's own retrieval can
+    refuse it."""
+    challenge_id, challenge_hash = _ready(court, direct_vm, direct_alice)
+    s.serve_all(direct_vm)
+    s.resolved(court, direct_vm, direct_bob, challenge_id, challenge_hash)
+    payload = s.leader_payload(direct_vm)
+    s.finding_in(payload, "REQ_PERMITTED_CLAIM")["quotes"] = [
+        {"evidence_id": "E2", "text": "The recorded claim was four thousand two hundred"}]
+    assert s.replay(direct_vm, payload) is False

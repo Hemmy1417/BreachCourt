@@ -251,12 +251,16 @@ def build() -> tuple:
          "settle": False,
          "note": "the whole round stops; the poisoned document is not quietly dropped"},
         {"case": "EX07", "challenge": "vaultlite", "wallet": "a07",
-         "summary": "Everything rests on one publisher's document.",
+         "summary": "The trace and the state both come from one publisher.",
          "reference": "0xa11ce", "claimed_impact": "HIGH",
-         "evidence": [item("evidence/attack-trace.json", "Execution trace")],
+         "evidence": [item("evidence/attack-trace.json", "Execution trace"),
+                      item("evidence/post-attack-state.html", "Vault state after the "
+                           "transaction")],
          "expect_verdict": "INCONCLUSIVE", "expect_reason": "CORROBORATION_SHORT",
          "expect_impact": "", "settle": False,
-         "note": "one origin where the challenge asks for two"},
+         "note": "the same two documents that confirm EX01, both served from one origin: "
+                 "everything a confirmation needs except the second publisher the "
+                 "challenge demands"},
         {"case": "EX08", "challenge": "vaultlite", "wallet": "a08",
          "summary": "The documents are live pages whose bytes nobody bound.",
          "reference": "0xa11ce", "claimed_impact": "HIGH",
@@ -274,11 +278,13 @@ def build() -> tuple:
                       item("evidence/within-claim-state.html", "Vault state after the "
                            "transaction", origin="mirror")],
          "expect_verdict": "EXPLOIT_REJECTED",
-         "expect_reason": "PROHIBITED_STATE_NOT_REACHED", "expect_impact": "",
+         "expect_reason": "EVIDENCE_CONTRADICTS_CLAIM", "expect_impact": "",
          "settle": False,
          "note": "the call ran and the access check was weak, but the caller received "
-                 "exactly its recorded claim: the invariant the challenge names was not "
-                 "violated, which is the distinction the primitive exists to draw"},
+                 "exactly its recorded claim, so the evidence contradicts the claim of an "
+                 "exploit rather than merely failing to show it - the distinction this "
+                 "primitive exists to draw, and the reading the panel gives a document "
+                 "that affirmatively shows the invariant holding"},
         {"case": "EX09", "challenge": "vaultlite", "wallet": "a09",
          "summary": "The trace is of a different deployment entirely.",
          "reference": "0xb0b0b0", "claimed_impact": "HIGH",

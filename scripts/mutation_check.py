@@ -47,49 +47,53 @@ def m(name: str, anchor: str, replacement: str = None) -> tuple:
 
 
 MUTATIONS = [
-    # -- retrieval -----------------------------------------------------------------------
-    m("a redirect is read as a retrieved source", "    if 300 <= code < 400:"),
+    # -- retrieval ------------------------------------------------------------------------
+    m("a redirect is read as a retrieved item", "    if 300 <= code < 400:"),
     m("a 404 is a generic failure", "    if code in (404, 410):"),
-    m("a forbidden source is a generic failure", "    if code in (401, 403):"),
+    m("a forbidden document is a generic failure", "    if code in (401, 403):"),
     m("a server error is a generic failure", "    if code >= 500:"),
     m("a binary content type is read",
       '    if content_type != "" and not any(t in content_type for t in TEXT_TYPES):'),
     m("an undecodable body is read",
       '    if text is None:\n        return (_empty_source(INVALID_CONTENT',
       '    if False:\n        return (_empty_source(INVALID_CONTENT'),
-    m("a page with no visible text is read", '    if normalized == "":'),
+    m("a document with no visible text is read", '    if normalized == "":'),
     m("scripts and styles count as text",
       "    if html:\n        text = _strip_markup(text)\n", ""),
-    m("an oversized source is not marked partial",
+    m("an oversized document is not marked partial",
       "    truncated = len(body) > BODY_BYTES_CAP or len(normalized) > TEXT_CAP\n",
       "    truncated = False\n"),
-    # -- what code decides before any panel ----------------------------------------------
-    m("a round with no readable source is judged anyway",
+    # -- evidence integrity ---------------------------------------------------------------
+    m("a pinned item's bytes are not checked against the declared digest",
+      '        if item["kind"] == KIND_PINNED and source["status"] in READABLE \\\n'
+      '                and source["raw_sha256"] != item["sha256"]:',
+      "        if False:"),
+    m("bytes that are not the ones filed stay quotable",
+      "            text = None\n            raw_text = None\n", ""),
+    m("a digest mismatch is judged by the panel anyway",
+      '    if any(s["status"] == DIGEST_MISMATCH for s in sources):'),
+    m("a round with no readable evidence is judged anyway",
       '    if not any(s["status"] in READABLE for s in sources):'),
-    m("a source addressing the adjudicator is judged anyway", "    if len(markers) > 0:"),
+    m("evidence addressing the adjudicator is judged anyway",
+      "    if len(markers) > 0:\n        return \"SOURCE_ADDRESSES_ADJUDICATOR\"\n",
+      "    if False:\n        return \"SOURCE_ADDRESSES_ADJUDICATOR\"\n"),
     m("text in the visible body is not scanned", "    if body_hit:"),
     m("markup and attributes are not scanned",
       "    if not body_hit and _evaluator_hits(_scan_form(raw_text)):"),
-    m("the title is not scanned",
-      '    if _evaluator_hits(_scan_form(source["title"])):'),
-    m("a poisoned source only blocks its own reading",
-      '    if len(markers) > 0:\n        return "SOURCE_ADDRESSES_ADJUDICATOR"\n',
-      '    if False:\n        return "SOURCE_ADDRESSES_ADJUDICATOR"\n'),
-    # -- what a finding must show ---------------------------------------------------------
-    m("a band met needs no quote",
+    m("the title is not scanned", '    if _evaluator_hits(_scan_form(source["title"])):'),
+    m("nothing is bound to a declared item, so bytes are neither compared nor stored",
+      "def _item_of(ctx: dict, evidence_id: str):\n"
+      '    for item in ctx["evidence"]:\n',
+      "def _item_of(ctx: dict, evidence_id: str):\n"
+      "    return None\n"
+      '    for item in ctx["evidence"]:\n'),
+    # -- what a reading must show ----------------------------------------------------------
+    m("a reading that bears on the verdict needs no quote",
       "    if state in QUOTED_STATES:\n        return len(quotes) > 0\n",
       "    if state in QUOTED_STATES:\n        return True\n"),
-    m("a stated date need not appear in its quote",
-      "            return len(quotes) > 0 and _date_in_quotes(date, quotes)\n",
-      "            return len(quotes) > 0\n"),
-    m("a date's month is not checked",
-      "any(t in words for t in _month_tokens(month)) and any(",
-      "True and any("),
-    m("a date's day is not checked",
-      "                t in words for t in _day_tokens(day)):\n",
-      "                True for t in _day_tokens(day)):\n"),
-    m("a finding that is not dated may carry a date",
-      '    if date != "":\n        return False\n', ""),
+    m("a severity band needs no quote",
+      "        return state in (IMPACT_NONE, UNCLEAR) or len(quotes) > 0\n",
+      "        return True\n"),
     m("a spliced quote is accepted when the panel answers",
       '        if _spliced(rq["text"]):\n            continue\n', ""),
     m("a spliced quote passes the gate",
@@ -98,248 +102,169 @@ MUTATIONS = [
     m("a quote need not ground in the text this node retrieved",
       "    return _grounds_in_order(_word_tokens(source), quote[\"text\"])\n",
       "    return True\n"),
-    # Dropping the eligibility check leaves `texts.get(evidence_id)` to return
-    # None for a source the round did not read, which refuses the quote the same
-    # way - an equivalent mutant. The check still earns its place: on the second
-    # gate pass over the ratified payload there are no texts to look in, and it
-    # is the only thing standing between a stored receipt and a quote citing a
-    # source nobody retrieved.
-    # -- the band -------------------------------------------------------------------------
-    m("the corroboration floor does not hold",
-      '        if len(_cited_origins(ctx, payload, subject)) >= band["min_corroboration"]:',
-      "        if True:"),
-    # Superseded by counting origins: duplicates in the cited list of source ids
-    # no longer change the count a band clears, so letting them through is
-    # unobservable. "corroboration counts source labels, not distinct hosts"
-    # above is the mutation that now carries this guard.
-    m("the bands are read mildest first, so the mildest band wins",
-      '    for index in range(len(charter["bands"]) - 1, -1, -1):',
-      '    for index in range(len(charter["bands"])):'),
-    m("a band that fell short is not recorded",
-      '        if short == "":\n            short = band["band_id"]\n', ""),
+    m("a quote may cite an item the round did not read",
+      '    if quote["evidence_id"] not in eligible:'),
+    # -- the verdict -----------------------------------------------------------------------
     m("a code reason is overridden by the panel's reading",
-      '    reason = payload["panel_reason"]\n    if reason != "":\n'
-      '        return (NO_BAND, reason, "", [], UNDATED, "")\n',
-      '    reason = payload["panel_reason"]\n    if False:\n'
-      '        return (NO_BAND, reason, "", [], UNDATED, "")\n'),
-    m("an unusable panel answer declares a band anyway",
+      '    reason = payload["panel_reason"]\n'
+      '    if reason == "EVIDENCE_DIGEST_MISMATCH" or reason == "NO_EVIDENCE_READABLE":',
+      '    reason = payload["panel_reason"]\n'
+      "    if False:"),
+    m("evidence addressing the adjudicator still reaches a verdict",
+      '    if reason == "SOURCE_ADDRESSES_ADJUDICATOR":\n'
+      '        return (INCONCLUSIVE, reason, "")',
+      '    if False:\n        return (INCONCLUSIVE, reason, "")'),
+    m("an unusable panel answer reaches a verdict",
       '    if payload["panel_state"] != PANEL_ASSESSED:\n'
-      '        return (NO_BAND, "PANEL_UNUSABLE", "", [], UNDATED, "")',
-      '    if False:\n'
-      '        return (NO_BAND, "PANEL_UNUSABLE", "", [], UNDATED, "")'),
-    m("the wrong hazard declares a band", "    if hazard == MISMATCH:"),
-    m("an unclear hazard declares a band", "    if hazard == UNCLEAR:"),
-    m("an undated onset declares a band",
-      '    if outcome == UNDATED:\n        return (NO_BAND, "SIGNAL_UNDATED", "", [], UNDATED, onset)',
-      '    if False:\n        return (NO_BAND, "SIGNAL_UNDATED", "", [], UNDATED, onset)'),
-    m("an onset from months back is treated as this event",
-      '    if _iso_epoch(ctx["now"]) - _iso_epoch(onset + "T00:00:00Z") > MAX_ONSET_LAG:'),
-    m("a stale signal declares a band",
-      '    if outcome == STALE:\n        return (NO_BAND, "SIGNAL_STALE", "", [], outcome, onset)',
-      '    if False:\n        return (NO_BAND, "SIGNAL_STALE", "", [], outcome, onset)'),
-    m("a date in the future vouches for freshness", "    if stated > now + 86400:"),
-    m("the freshness window is ignored", "    if now - stated > max_age:"),
-    m("freshness is aged even when the charter turned it off", "    if max_age == 0:"),
-    # -- the relief decision ---------------------------------------------------------------
-    m("a need outside the declared area qualifies", "    if area == OUTSIDE:"),
-    m("an unclear area qualifies", "    if area == UNCLEAR:"),
-    m("a contradicted need qualifies", "    if need == CONTRADICTED:"),
-    m("an absent need qualifies", "    if need == ABSENT:"),
-    m("an unclear need qualifies", "    if need == UNCLEAR:"),
-    m("a need not linked to this event qualifies", "    if link == UNLINKED:"),
-    m("an unclear link qualifies", "    if link == UNCLEAR:"),
-    m("undated evidence qualifies",
-      '    if outcome == UNDATED:\n        return (INCONCLUSIVE, "EVIDENCE_UNDATED", outcome, dated)',
-      '    if False:\n        return (INCONCLUSIVE, "EVIDENCE_UNDATED", outcome, dated)'),
-    m("evidence from before the onset qualifies",
-      '    if ctx["onset"] != "" and dated < ctx["onset"]:'),
-    m("stale evidence qualifies",
-      '    if outcome == STALE:\n        return (INCONCLUSIVE, "EVIDENCE_STALE", outcome, dated)',
-      '    if False:\n        return (INCONCLUSIVE, "EVIDENCE_STALE", outcome, dated)'),
+      '        return (INCONCLUSIVE, "PANEL_UNUSABLE", "")',
+      '    if False:\n        return (INCONCLUSIVE, "PANEL_UNUSABLE", "")'),
+    m("contradictory evidence is confirmed anyway",
+      "    if _state_of(payload, SUBJECT_CONSISTENCY) == CONTRADICTORY:"),
+    m("an attack that was not shown is confirmed",
+      "    if attack == NOT_SHOWN:"),
+    m("an unclear attack is confirmed",
+      '    if attack == UNCLEAR:\n        return (INCONCLUSIVE, "ATTACK_UNCLEAR", "")',
+      '    if False:\n        return (INCONCLUSIVE, "ATTACK_UNCLEAR", "")'),
+    m("evidence contradicting the claim is confirmed",
+      "    if reached == CONTRADICTED:"),
+    m("a prohibited state that was not reached is confirmed",
+      "    if reached == NOT_SHOWN:"),
+    m("an unclear prohibited state is confirmed",
+      "    if reached == UNCLEAR:\n"
+      '        return (INCONCLUSIVE, "PROHIBITED_STATE_UNCLEAR", "")',
+      '    if False:\n        return (INCONCLUSIVE, "PROHIBITED_STATE_UNCLEAR", "")'),
+    m("a required evidence requirement that was not met is confirmed",
+      '        if requirement["required"] and state == NOT_MET:'),
+    m("an unclear required requirement is confirmed",
+      '        if requirement["required"] and state == UNCLEAR:'),
+    m("an optional requirement blocks a confirmation",
+      '        if requirement["required"] and state == NOT_MET:\n'
+      '            return (EXPLOIT_REJECTED, "REQUIREMENT_NOT_MET", "")',
+      "        if state == NOT_MET:\n"
+      '            return (EXPLOIT_REJECTED, "REQUIREMENT_NOT_MET", "")'),
+    m("the corroboration floor does not hold",
+      '    if not pinned_only or len(origins) < ctx["challenge"]["min_independent_origins"]:',
+      "    if not pinned_only:"),
+    m("unbound bytes may carry a confirmation",
+      '    if not pinned_only or len(origins) < ctx["challenge"]["min_independent_origins"]:',
+      '    if len(origins) < ctx["challenge"]["min_independent_origins"]:'),
+    m("corroboration counts items, not distinct hosts",
+      '            hosts.append(_host_of(item["url"]))\n',
+      '            hosts.append(item["evidence_id"])\n'),
+    m("a severity nobody could read is confirmed",
+      "    if impact in (UNCLEAR, IMPACT_NONE):"),
     # -- what validators compare -----------------------------------------------------------
-    # The panel state, the code reason and the markers are each a pure function
-    # of the source records, and a digest is compared twice over - in what was
-    # retrieved and in the consequence. Mutating one of them alone is caught by
-    # another, so the sweep mutates the layer instead.
-    m("what was retrieved is not compared at all",
-      "def _evidence_difference(ctx: dict, own: dict, theirs: dict) -> str:\n",
-      "def _evidence_difference(ctx: dict, own: dict, theirs: dict) -> str:\n"
-      '    return ""\n'),
+    # What was retrieved is compared twice over: this function, and the statuses and
+    # pinned digests inside the consequence. Either alone catches every difference the
+    # other would, and no same-line mutation distinguishes them - a PINNED item cannot
+    # differ between nodes without its digest differing, and a LIVE item's status is in
+    # the consequence. Documented as an equivalent mutant rather than turned into a
+    # false kill.
     m("the consequence is not compared",
-      "    for key in sorted(mine.keys()):\n        if mine[key] != theirs[key]:\n"
-      "            return key + \" mine=\" + repr(mine[key]) + \" theirs=\" + repr(theirs[key])\n",
-      "    for key in sorted(mine.keys()):\n        if False:\n"
-      "            return key + \" mine=\" + repr(mine[key]) + \" theirs=\" + repr(theirs[key])\n"),
-    # A digest is compared twice over - in what was retrieved and in the
-    # consequence - and stored in the receipt on the same condition, so the
-    # sweep mutates the one thing all three rest on.
-    m("every source is treated as DYNAMIC, so its bytes are compared nowhere",
-      "def _stability_of(ctx: dict, source_id: str) -> str:\n"
-      '    if ctx["kind"] != KIND_ASSESS:\n'
-      '        return ctx["stability"]\n',
-      "def _stability_of(ctx: dict, source_id: str) -> str:\n"
-      "    if True:\n"
-      '        return "DYNAMIC"\n'),
-    m("the leader's payload is taken on trust",
+      "    for key in sorted(mine.keys()):\n        if mine[key] != theirs[key]:\n",
+      "    for key in sorted(mine.keys()):\n        if False:\n"),
+    m("the leader's payload is gated against its own text, not this node's",
       "        parsed = _parse_payload(leader_res.calldata, ctx, own_texts)\n",
       "        parsed = _parse_payload(leader_res.calldata, ctx, None)\n"),
-    # Nothing in this contract raises a model failure - an unusable answer is a
-    # panel state, not an error - so the guard that refuses to ratify one can
-    # only ever see a leader from another version. It stays, and no test pins it.
     m("a transient failure ratifies a different failure",
       "        if leader_text.startswith(ERROR_TRANSIENT):\n"
       "            return own_text.startswith(ERROR_TRANSIENT)\n"
       "        return own_text == leader_text\n",
       "        return True\n"),
-    # Direct Mode hands the leader's own payload back as the ratified one, and it
-    # has already passed the gate, so the second pass cannot be pinned offline.
-    # It guards the on-chain path, where the ratified text comes from consensus.
-    # -- the charter -----------------------------------------------------------------------
-    m("corroboration counts source labels, not distinct hosts",
-      "        if len(_cited_origins(ctx, payload, subject)) >= band[\"min_corroboration\"]:",
-      '        if len(cited) >= band["min_corroboration"]:'),
-    m("a charter may demand more corroboration than it has hosts",
-      '    err = _bands_error(charter["bands"], len(_origins(charter["monitors"])))\n',
-      '    err = _bands_error(charter["bands"], len(charter["monitors"]))\n'),
-    m("a request may cite any host at all",
-      '        if not _domain_allowed(_host_of(url), spec["evidence_domains"]):'),
-    m("the charter need not name its evidence authorities",
-      '    evidence = charter["evidence_domains"]\n'
-      "    if not isinstance(evidence, list) or len(evidence) < 1 or len(evidence) > MAX_DOMAINS \\\n",
-      '    evidence = charter["evidence_domains"]\n'
+    # -- the challenge ---------------------------------------------------------------------
+    m("a challenge need not name its evidence sources",
+      '    domains = spec["evidence_domains"]\n'
+      "    if not isinstance(domains, list) or len(domains) < 1 or len(domains) > MAX_DOMAINS \\\n",
+      '    domains = spec["evidence_domains"]\n'
       "    if False:\n"),
-    m("a second look may judge different bytes",
-      "    sources, texts, markers = _retrieve(ctx)\n    _same_evidence(ctx, sources)\n",
-      "    sources, texts, markers = _retrieve(ctx)\n"),
-    m("the bytes a decision rested on are never recorded",
-      "        source = _source_of(payload, REQUEST_SOURCE_ID)\n"
-      '        if source is not None and source["status"] in READABLE:\n'
-      '            request.evidence_digest = source["content_digest"]\n', ""),
-    m("evidence whose bytes were never agreed may be rechecked",
-      '        if str(request.stability) == "DYNAMIC" and str(request.evidence_digest) == "":'),
-    m("min_corroboration may exceed the watched sources",
-      '        if not _int_in(entry["min_corroboration"], 1, monitors):'),
-    m("a monitor may sit outside the charter's authority domains",
-      "        if not _domain_allowed(_host_of(canonical_url), domains):"),
-    m("the monitors need not be numbered in order",
-      '        if entry["source_id"] != expected:'),
-    m("a band id may shadow a built-in subject", "    if text.upper() in BUILT_IN_SUBJECTS:"),
-    m("charter text may address the adjudicator",
+    m("a requirement id may shadow a built-in subject",
+      "    if text.upper() in BUILT_IN_SUBJECTS:"),
+    m("a severity band may be NONE or UNCLEAR",
+      '        if entry["band"] in (IMPACT_NONE, UNCLEAR):'),
+    m("no evidence requirement need be required",
+      '    if not any(entry["required"] for entry in values):'),
+    m("min_independent_origins may exceed the sources the challenge names",
+      '    if spec["min_independent_origins"] > len(domains):'),
+    m("challenge text may address the adjudicator",
       "    if _evaluator_hits(value) or _hidden_hits(value):"),
-    m("a charter may promise more than one grant of its budget",
-      '    if budget < _largest_grant(charter["bands"]):'),
-    m("freshness may be turned off with any small number",
-      "    if age != 0 and age < MIN_WINDOW:"),
-    m("an amount may be sent as a number",
-      "def _digits(value) -> bool:\n"
-      '    return isinstance(value, str) and value != "" and all("0" <= ch <= "9" for ch in value)\n',
-      "def _digits(value) -> bool:\n"
-      "    return str(value) != \"\" and all(\"0\" <= ch <= \"9\" for ch in str(value))\n"),
+    m("a challenge may close in the past",
+      "        if _iso_epoch(now) >= _iso_epoch(spec[\"submission_deadline\"]):"),
+    m("the windows are unbounded",
+      '        if not _int_in(spec[field], MIN_WINDOW, MAX_WINDOW):'),
     m("an IP literal is a host", "    if all_numeric or labels[-1].isdigit():"),
-    # -- the state machine and the money ---------------------------------------------------
-    m("an event may be assessed twice",
-      '            if str(event.status) != EV_OPEN:',
-      "            if False:"),
-    m("an event may be reassessed twice",
-      "            if bool(event.reassessed):"),
-    m("an event may be assessed after its window",
-      '            if at > _iso_epoch(str(event.window_ends)):\n'
-      '                self._fail("the assessment window closed at "',
-      '            if False:\n'
-      '                self._fail("the assessment window closed at "'),
-    m("an event may be finalized inside its window",
-      '        if _iso_epoch(now) <= _iso_epoch(str(event.window_ends)):\n'
-      '            self._fail("the reassessment window closes at "',
+    # -- the evidence a submission declares ------------------------------------------------
+    m("a pinned item needs no digest",
+      '            if not _is_hex(entry["sha256"], 64):'),
+    m("a live item may declare a digest it is not held to",
+      '        elif entry["sha256"] != "":'),
+    m("an item may come from any host at all",
+      "        if not _domain_allowed(_host_of(canonical_url), domains):"),
+    m("the same document may be declared twice",
+      "        if canonical_url in urls:"),
+    m("the evidence list is unbounded",
+      "    if not isinstance(values, list) or len(values) < 1 or len(values) > MAX_EVIDENCE:"),
+    m("the claimed impact need not be one of the challenge's bands",
+      "        if claimed_impact not in _band_names(spec):"),
+    m("the attacker's own text is not checked",
+      "            error = _text_error(value, cap, label, newlines)\n"
+      "            if error != \"\":\n                self._fail(error)\n"
+      "        if claimed_impact not in _band_names(spec):",
+      "        if claimed_impact not in _band_names(spec):"),
+    # -- the state machine ------------------------------------------------------------------
+    m("a submission may be resolved twice",
+      '        if str(submission.status) != SUB_PENDING:\n'
+      '            self._fail("only a PENDING submission is resolved")',
       '        if False:\n'
-      '            self._fail("the reassessment window closes at "'),
-    m("a request may be filed against an event with no declaration",
-      '        if band_id in ("", NO_BAND):'),
-    m("a request may ask for a category the band does not promise",
-      "        if _relief_for(band, category) is None:"),
-    m("a second request may cite a source another request holds",
+      '            self._fail("only a PENDING submission is resolved")'),
+    m("a submission may be resolved after its window",
+      '        if _iso_epoch(now) > _iso_epoch(str(submission.window_ends)):\n'
+      '            self._fail("the resolve window closed at " + str(submission.window_ends))',
+      '        if False:\n'
+      '            self._fail("the resolve window closed at " + str(submission.window_ends))'),
+    m("a verdict may be contested twice", "        if bool(submission.contested):"),
+    m("a stranger may contest a verdict",
+      "        if self._sender_hex() not in (str(submission.attacker), "
+      "str(challenge.publisher)):"),
+    m("a verdict may be contested after its window",
+      '        if _iso_epoch(now) > _iso_epoch(str(submission.window_ends)):\n'
+      '            self._fail("the contest window closed at " + str(submission.window_ends))',
+      '        if False:\n'
+      '            self._fail("the contest window closed at " + str(submission.window_ends))'),
+    m("a verdict may be made final inside its contest window",
+      '        if _iso_epoch(now) <= _iso_epoch(str(submission.window_ends)):\n'
+      '            self._fail("the contest window closes at " + str(submission.window_ends))',
+      '        if False:\n'
+      '            self._fail("the contest window closes at " + str(submission.window_ends))'),
+    m("a submission may lapse while its window is open",
+      '        if _iso_epoch(now) <= _iso_epoch(str(submission.window_ends)):\n'
+      '            self._fail("the resolve window closes at " + str(submission.window_ends))',
+      '        if False:\n'
+      '            self._fail("the resolve window closes at " + str(submission.window_ends))'),
+    m("anyone may withdraw somebody else's submission",
+      "        if self._sender_hex() != str(submission.attacker):"),
+    m("a challenge with submissions may be cancelled",
+      "        if len(challenge.submission_ids) > 0:"),
+    m("anyone may cancel a challenge",
+      "        if self._sender_hex() != str(challenge.publisher):"),
+    m("an attempt may be filed after the deadline",
+      "        if status == CH_CLOSED:"),
+    m("an attempt may be filed against a cancelled challenge",
+      "        if status == CH_CANCELLED:"),
+    m("the challenge hash a submission commits to is not checked",
+      '        if challenge_hash != str(challenge.definition_hash):'),
+    m("one account may file twice against one challenge",
       "        if held is not None:"),
-    m("a request may be adjudicated after its window",
-      '        if _iso_epoch(now) > _iso_epoch(str(request.window_ends)):\n'
-      '            self._fail("the adjudication window closed at "',
-      '        if False:\n'
-      '            self._fail("the adjudication window closed at "'),
-    m("a request may be rechecked twice", "        if bool(request.rechecked):"),
-    m("a request may be settled inside its recheck window",
-      '        if _iso_epoch(now) <= _iso_epoch(str(request.window_ends)):\n'
-      '            self._fail("the recheck window closes at "',
-      '        if False:\n'
-      '            self._fail("the recheck window closes at "'),
-    m("a band withdrawn under a filed request is adjudicated anyway",
-      "        if str(event.band_id) != str(request.band_id):"),
-    m("the per-band grant cap does not hold",
-      "        if self._counter_value(self.grants_used, self._grant_key(request)) \\\n"
-      '                >= action["max_grants"]:',
-      "        if False:"),
-    m("the per-wallet grant cap does not hold",
-      "        if self._counter_value(self.wallet_grants, self._wallet_key(request)) \\\n"
-      '                >= spec["max_grants_per_wallet"]:',
-      "        if False:"),
-    m("a charter reserves more than its treasury holds",
-      "        if amount > free:\n            return (0, \"TREASURY_SHORT\")\n",
-      "        if False:\n            return (0, \"TREASURY_SHORT\")\n"),
-    m("a superseded authorisation keeps its reservation",
-      "        self._release(request, charter)\n", ""),
-    m("a released reservation keeps its grant slot",
-      "        self._bump(self.grants_used, self._grant_key(request), -1)\n"
-      "        self._bump(self.wallet_grants, self._wallet_key(request), -1)\n", ""),
-    m("settling pays a request that did not qualify",
-      "        amount = int(request.reserved_atto)\n        if amount > 0:",
-      "        amount = int(request.reserved_atto)\n        if True:"),
-    m("a settled grant frees the source it rested on",
-      "            self._credit(str(request.filer), amount)\n"
-      "        else:\n            self._free_claim(request)\n",
-      "            self._credit(str(request.filer), amount)\n"
-      "        if True:\n            self._free_claim(request)\n"),
-    m("a lapsed request keeps the source it cited",
-      "        request.status = RQ_LAPSED\n        self._free_claim(request)\n",
-      "        request.status = RQ_LAPSED\n"),
-    m("withdrawing does not clear the ledger first",
-      "        self.credits[wallet] = u256(0)\n"
-      "        self.credits_total_atto = u256(int(self.credits_total_atto) - amount)\n", ""),
-    m("anyone may fund a charter",
-      '            reason = "only the charter\'s steward funds its treasury"',
-      '            reason = ""'),
-    m("a refused deposit is raised away instead of returned",
-      '            if value > 0:\n                return self._return_deposit("fund_charter", reason)\n',
-      "            if False:\n                pass\n"),
-    m("anyone may reclaim a charter's treasury",
-      '        if self._sender_hex() != str(charter.steward):\n'
-      '            self._fail("only the charter\'s steward reclaims its treasury")',
-      '        if False:\n'
-      '            self._fail("only the charter\'s steward reclaims its treasury")'),
-    m("a reserved grant may be reclaimed",
-      '        if str(charter.status) != CHARTER_RETIRED:\n'
-      '            self._fail("retire the charter first")\n'
-      "        free = int(charter.pool_atto) - int(charter.reserved_atto)\n",
-      '        if str(charter.status) != CHARTER_RETIRED:\n'
-      '            self._fail("retire the charter first")\n'
-      "        free = int(charter.pool_atto)\n"),
-    m("a retired charter still takes funds",
-      '            reason = "a retired charter takes no funds"', '            reason = ""'),
-    m("an event may be opened against a retired charter",
-      "        if str(charter.status) != CHARTER_ACTIVE:\n"
-      '            self._fail("the charter is retired")',
-      "        if False:\n"
-      '            self._fail("the charter is retired")'),
-    m("the charter hash an event commits to is not checked",
-      '        if charter_hash != str(charter.definition_hash):\n'
-      '            self._fail("charter_hash does not match the charter")\n'
-      "        for value, cap, label in ((situation, SITUATION_CAP, \"situation\"),",
-      "        if False:\n"
-      '            self._fail("charter_hash does not match the charter")\n'
-      "        for value, cap, label in ((situation, SITUATION_CAP, \"situation\"),"),
-    m("the open-event limit does not hold",
-      '        if self._counter_value(self.open_counts, "E:" + wallet) >= MAX_OPEN_PER_WALLET:'),
-    m("the open-request limit does not hold",
-      '        if self._counter_value(self.open_counts, "R:" + wallet) >= MAX_OPEN_PER_WALLET:'),
-    m("a receipt stores a dynamic source's digest",
-      '            stable = _stability_of(ctx, source["source_id"]) == "STABLE"\n',
-      "            stable = True\n"),
+    m("the open-submission cap does not hold",
+      "        if self._counter_value(wallet) >= MAX_OPEN_PER_WALLET:"),
+    m("a receipt stores a live item's bytes",
+      '            pinned = item is not None and item["kind"] == KIND_PINNED\n',
+      "            pinned = True\n"),
+    m("every reading is marked compared",
+      '            entry["compared"] = finding["id"] in compared\n',
+      '            entry["compared"] = True\n'),
+    m("the confirmed count is not corrected when a contest overturns",
+      "        if was_confirmed and not now_confirmed:\n"
+      "            self.confirmed_counter = u32(int(self.confirmed_counter) - 1)\n", ""),
 ]
 
 

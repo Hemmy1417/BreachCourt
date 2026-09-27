@@ -305,17 +305,17 @@ def phase_cases(chain: Chain, cases: dict, hosts: dict):
         step = "resolve:" + name
         if chain.transcript.has(step):
             log("  skip " + step + " (recorded)")
-            continue
-        chain.send(step, "keeper", "resolve", [submission_id])
-        record(chain, step, name, submission_id, case)
-
-    contest_case = cases["contest_case"]
-    submission_id = chain.transcript.get("file:" + contest_case)["submission_id"]
-    step = "contest:" + contest_case
-    if not chain.transcript.has(step):
-        case = [c for c in cases["cases"] if c["case"] == contest_case][0]
-        chain.send(step, case["wallet"], "contest", [submission_id])
-        record(chain, step, contest_case + ":contest", submission_id, case, round_two=True)
+        else:
+            chain.send(step, "keeper", "resolve", [submission_id])
+            record(chain, step, name, submission_id, case)
+        # a contest lives inside a window measured from the resolution it contests,
+        # so it runs here and not after every other case
+        if name == cases["contest_case"]:
+            contest_step = "contest:" + name
+            if not chain.transcript.has(contest_step):
+                chain.send(contest_step, case["wallet"], "contest", [submission_id])
+                record(chain, contest_step, name + ":contest", submission_id, case,
+                       round_two=True)
 
 
 def record(chain: Chain, step: str, label: str, submission_id: str, case: dict,
@@ -425,17 +425,17 @@ def phase_refusals(chain: Chain, cases: dict, hosts: dict):
     outside = json.dumps([{"url": "https://attacker.example.com/my-own-report.json",
                            "kind": "LIVE", "sha256": "", "label": "My own report"}])
 
-    chain.refuse("refuse:wrong_hash", "bob", "submit_attempt",
+    chain.refuse("refuse:wrong_hash", "a12", "submit_attempt",
                  [cid, "00" * 32, "A summary of an attempt.", "0xa11ce", "HIGH",
                   other_evidence],
                  because="the challenge hash does not match the challenge")
-    chain.refuse("refuse:unknown_challenge", "bob", "submit_attempt",
+    chain.refuse("refuse:unknown_challenge", "a12", "submit_attempt",
                  ["BC-999999", chash, "A summary.", "0xa11ce", "HIGH", other_evidence],
                  because="no such challenge")
-    chain.refuse("refuse:outside_domains", "bob", "submit_attempt",
+    chain.refuse("refuse:outside_domains", "a12", "submit_attempt",
                  [cid, chash, "A summary.", "0xa11ce", "HIGH", outside],
                  because="the evidence must come from a source the challenge named")
-    chain.refuse("refuse:unknown_band", "bob", "submit_attempt",
+    chain.refuse("refuse:unknown_band", "a12", "submit_attempt",
                  [cid, chash, "A summary.", "0xa11ce", "APOCALYPTIC", other_evidence],
                  because="the claimed impact must be one of the challenge's bands")
     chain.refuse("refuse:duplicate_submission", case["wallet"], "submit_attempt",
@@ -444,7 +444,7 @@ def phase_refusals(chain: Chain, cases: dict, hosts: dict):
                  because="this account already filed against this challenge")
     chain.refuse("refuse:cancel_with_submissions", "publisher", "cancel_challenge", [cid],
                  because="a challenge that already has submissions cannot be cancelled")
-    chain.refuse("refuse:not_publisher_cancel", "bob", "cancel_challenge", [cid],
+    chain.refuse("refuse:not_publisher_cancel", "a12", "cancel_challenge", [cid],
                  because="only the publisher cancels a challenge")
     first = chain.transcript.get("file:" + cases["cases"][0]["case"])["submission_id"]
     chain.refuse("refuse:double_resolution", "keeper", "resolve", [first],

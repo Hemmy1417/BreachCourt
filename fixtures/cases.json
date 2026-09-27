@@ -193,15 +193,22 @@
      "origin": "base",
      "path": "evidence/attack-trace.json",
      "sha256": "9ac7473c37ca0a4127d2bc6cfc857fd294951afe6e214c50f3aaca0ae834d504"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "base",
+     "path": "evidence/post-attack-state.html",
+     "sha256": "d9389ae55e329a6bbcabc235258c6df5e8912bdf9706a167b4833bd89264fc87"
     }
    ],
    "expect_impact": "",
    "expect_reason": "CORROBORATION_SHORT",
    "expect_verdict": "INCONCLUSIVE",
-   "note": "one origin where the challenge asks for two",
+   "note": "the same two documents that confirm EX01, both served from one origin: everything a confirmation needs except the second publisher the challenge demands",
    "reference": "0xa11ce",
    "settle": false,
-   "summary": "Everything rests on one publisher's document.",
+   "summary": "The trace and the state both come from one publisher.",
    "wallet": "a07"
   },
   {
@@ -254,9 +261,9 @@
     }
    ],
    "expect_impact": "",
-   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_reason": "EVIDENCE_CONTRADICTS_CLAIM",
    "expect_verdict": "EXPLOIT_REJECTED",
-   "note": "the call ran and the access check was weak, but the caller received exactly its recorded claim: the invariant the challenge names was not violated, which is the distinction the primitive exists to draw",
+   "note": "the call ran and the access check was weak, but the caller received exactly its recorded claim, so the evidence contradicts the claim of an exploit rather than merely failing to show it - the distinction this primitive exists to draw, and the reading the panel gives a document that affirmatively shows the invariant holding",
    "reference": "0x0c1a1m",
    "settle": false,
    "summary": "Called emergencyWithdraw from an account with no role; the call completed and paid out the recorded claim.",

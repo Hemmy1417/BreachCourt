@@ -1,0 +1,83 @@
+22:41:56 contract 0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D phase full
+22:41:56 phase challenges
+22:41:56   challenge:vaultlite: publish_challenge as publisher
+22:42:36     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:42:38     vaultlite -> BC-000003
+22:42:38   challenge:vaultlite-single: publish_challenge as publisher
+22:43:18     FINALIZED/SUCCESS votes agree,idle,agree,idle,agree
+22:43:20     vaultlite-single -> BC-000004
+22:43:20 phase cases
+22:43:22   file:lapse: submit_attempt as stranger
+22:44:07     FINALIZED/SUCCESS votes agree,agree,idle,idle,agree
+22:44:10   file:EX01: submit_attempt as a01
+22:44:49     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+22:44:51   resolve:EX01: resolve as keeper
+22:46:04     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+22:46:07     EX01: EXPLOIT_CONFIRMED/EXPLOIT_SHOWN/HIGH HELD
+22:46:09   file:EX02: submit_attempt as a02
+22:46:49     FINALIZED/SUCCESS votes agree,idle,idle,agree,agree
+22:46:51   resolve:EX02: resolve as keeper
+22:47:55     FINALIZED/SUCCESS votes disagree,agree,agree,agree,disagree
+22:47:58     EX02: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ HELD
+22:48:00   file:EX03: submit_attempt as a03
+22:48:41     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:48:42   resolve:EX03: resolve as keeper
+22:50:19     FINALIZED/SUCCESS votes agree,agree,idle,agree,idle
+22:50:22     EX03: INCONCLUSIVE/EVIDENCE_CONTRADICTORY/ HELD
+22:50:24   file:EX04: submit_attempt as a04
+22:51:08     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:51:09   resolve:EX04: resolve as keeper
+22:51:50     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+22:51:54     EX04: EVIDENCE_UNAVAILABLE/NO_EVIDENCE_READABLE/ HELD
+22:51:56   file:EX05: submit_attempt as a05
+22:52:32     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+22:52:34   resolve:EX05: resolve as keeper
+22:53:18     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+22:53:22     EX05: EVIDENCE_UNAVAILABLE/EVIDENCE_DIGEST_MISMATCH/ HELD
+22:53:23   file:EX06: submit_attempt as a06
+22:54:02     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:54:04   resolve:EX06: resolve as keeper
+22:54:49     FINALIZED/SUCCESS votes idle,agree,idle,agree,agree
+22:54:52     EX06: INCONCLUSIVE/SOURCE_ADDRESSES_ADJUDICATOR/ HELD
+22:54:54   file:EX07: submit_attempt as a07
+22:55:34     FINALIZED/SUCCESS votes agree,idle,idle,agree,agree
+22:55:36   resolve:EX07: resolve as keeper
+22:56:38     FINALIZED/SUCCESS votes disagree,agree,agree,agree,disagree
+22:56:42     EX07: INCONCLUSIVE/PROHIBITED_STATE_UNCLEAR/ MISSED
+22:56:44   file:EX08: submit_attempt as a08
+22:57:30     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:57:32   resolve:EX08: resolve as keeper
+22:58:30     FINALIZED/SUCCESS votes agree,idle,agree,agree,idle
+22:58:34     EX08: INCONCLUSIVE/CORROBORATION_SHORT/ HELD
+22:58:36   file:EX11: submit_attempt as a11
+22:59:14     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+22:59:16   resolve:EX11: resolve as keeper
+23:00:25     FINALIZED/SUCCESS votes agree,idle,idle,agree,agree
+23:00:29     EX11: EXPLOIT_REJECTED/EVIDENCE_CONTRADICTS_CLAIM/ MISSED
+23:00:31   file:EX09: submit_attempt as a09
+23:01:11     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:01:13   resolve:EX09: resolve as keeper
+23:02:17     FINALIZED/SUCCESS votes agree,agree,agree,idle,idle
+23:02:21     EX09: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ HELD
+23:02:28   file:EX10: submit_attempt as a10
+23:03:07     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:03:09   resolve:EX10: resolve as keeper
+23:04:18     FINALIZED/SUCCESS votes agree,agree,agree,disagree,idle
+23:04:22     EX10: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ HELD
+23:04:22   contest:EX02: contest as a02
+23:05:02     FINALIZED/ERROR votes agree,agree,agree,agree,agree
+23:05:06     EX02:contest: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ MISSED
+23:05:06 phase settle
+23:05:07   finalize:EX01: finalize as keeper
+23:05:48     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+23:05:52   finalize:EX02: finalize as keeper
+23:06:33     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:06:37   finalize:EX03: finalize as keeper
+23:07:18     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:07:22   waiting 368s for the resolve window of AT-000007
+23:09:22   waiting 248s for the resolve window of AT-000007
+23:11:22   waiting 128s for the resolve window of AT-000007
+23:13:22   lapse: lapse_submission as keeper
+23:14:03     FINALIZED/SUCCESS votes idle,agree,idle,agree,agree
+23:14:06   stats: {"challenges": 4, "confirmed": 2, "resolutions": 16, "submissions": 18}
+23:14:06 phase refusals
