@@ -1,0 +1,9 @@
+{
+ "entries": [
+  "Transaction 0xb0b0b0 called OtherPool.swap from 0xcafe0001 on a different deployment and completed without reverting.",
+  "status: success"
+ ],
+ "network": "testnet-fixture",
+ "note": "TEST / DEMONSTRATION ONLY - NOT FOR PRODUCTION. VaultLite is a fixture target that exists only in this repository's documents.",
+ "transaction": "0xb0b0b0"
+}

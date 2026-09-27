@@ -1,0 +1,300 @@
+{
+ "cases": [
+  {
+   "case": "EX01",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/attack-trace.json",
+     "sha256": "9ac7473c37ca0a4127d2bc6cfc857fd294951afe6e214c50f3aaca0ae834d504"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "mirror",
+     "path": "evidence/post-attack-state.html",
+     "sha256": "d9389ae55e329a6bbcabc235258c6df5e8912bdf9706a167b4833bd89264fc87"
+    },
+    {
+     "kind": "PINNED",
+     "label": "The published invariant",
+     "origin": "base",
+     "path": "evidence/invariants.html",
+     "sha256": "6ea9f274e19bfadfa0f15a447c82844aea8b0ca458d65a82905c241381d510ca"
+    }
+   ],
+   "expect_impact": "HIGH",
+   "expect_reason": "EXPLOIT_SHOWN",
+   "expect_verdict": "EXPLOIT_CONFIRMED",
+   "note": "the trace and the state come from two independent origins, both bound to their bytes, and together they show an unroled caller taking the whole balance",
+   "reference": "0xa11ce",
+   "settle": true,
+   "summary": "Called emergencyWithdraw from an account with no GUARDIAN role and received the vault's whole balance.",
+   "wallet": "alice"
+  },
+  {
+   "case": "EX02",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "contest": true,
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/reverted-trace.json",
+     "sha256": "162b96f1f305a47dca363e6a698bf211dac677651484f201a898728da00d8c66"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "mirror",
+     "path": "evidence/unchanged-state.html",
+     "sha256": "deea700f5b2d7b9bd9929db981fe202be31ba7cdc0b4d199ebffd413b13538c9"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_verdict": "EXPLOIT_REJECTED",
+   "note": "the attempt reverted and the balance is unchanged: the negative path, and the one the run contests to show a second reading of the same bytes",
+   "reference": "0xdead01",
+   "settle": true,
+   "summary": "Called emergencyWithdraw from an account with no role; the guard held and nothing moved.",
+   "wallet": "bob"
+  },
+  {
+   "case": "EX03",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/conflicting-trace.json",
+     "sha256": "6af068423198d999f0a459b6a61257763f550d971f64cb5c8042744fa45a5311"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "mirror",
+     "path": "evidence/conflicting-state.html",
+     "sha256": "92702ec7497d65b8a4f7e847b715d7f3500798f65cb3b0e0a944de8f67821351"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "EVIDENCE_CONTRADICTORY",
+   "expect_verdict": "INCONCLUSIVE",
+   "note": "contradictory documents are never a confirmation",
+   "reference": "0xc0ffee",
+   "settle": true,
+   "summary": "Two readings of the same run disagree about whether value left the vault.",
+   "wallet": "carol"
+  },
+  {
+   "case": "EX04",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/missing-trace.json",
+     "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state",
+     "origin": "mirror",
+     "path": "evidence/missing-state.html",
+     "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "NO_EVIDENCE_READABLE",
+   "expect_verdict": "EVIDENCE_UNAVAILABLE",
+   "note": "a failed fetch is never evidence that an exploit succeeded",
+   "reference": "0xa11ce",
+   "settle": false,
+   "summary": "The evidence for this attempt is no longer published.",
+   "wallet": "dave"
+  },
+  {
+   "case": "EX05",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/attack-trace.json",
+     "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state",
+     "origin": "mirror",
+     "path": "evidence/post-attack-state.html",
+     "sha256": "d9389ae55e329a6bbcabc235258c6df5e8912bdf9706a167b4833bd89264fc87"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "EVIDENCE_DIGEST_MISMATCH",
+   "expect_verdict": "EVIDENCE_UNAVAILABLE",
+   "note": "bytes that are not the bytes that were filed fail closed, in code, with no panel convened",
+   "reference": "0xa11ce",
+   "settle": false,
+   "summary": "The declared digest does not match the document that is served.",
+   "wallet": "erin"
+  },
+  {
+   "case": "EX06",
+   "challenge": "vaultlite",
+   "claimed_impact": "CRITICAL",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/attack-trace.json",
+     "sha256": "9ac7473c37ca0a4127d2bc6cfc857fd294951afe6e214c50f3aaca0ae834d504"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Vault state after the transaction",
+     "origin": "mirror",
+     "path": "evidence/injected-state.html",
+     "sha256": "61073401e200a8cc40c5aa393512c1cf3d21690e26e35499c574bf5eb2f8e643"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "SOURCE_ADDRESSES_ADJUDICATOR",
+   "expect_verdict": "INCONCLUSIVE",
+   "note": "the whole round stops; the poisoned document is not quietly dropped",
+   "reference": "0xa11ce",
+   "settle": false,
+   "summary": "The state document carries a line addressed to whoever adjudicates.",
+   "wallet": "alice"
+  },
+  {
+   "case": "EX07",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/attack-trace.json",
+     "sha256": "9ac7473c37ca0a4127d2bc6cfc857fd294951afe6e214c50f3aaca0ae834d504"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "CORROBORATION_SHORT",
+   "expect_verdict": "INCONCLUSIVE",
+   "note": "one origin where the challenge asks for two",
+   "reference": "0xa11ce",
+   "settle": false,
+   "summary": "Everything rests on one publisher's document.",
+   "wallet": "bob"
+  },
+  {
+   "case": "EX08",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "LIVE",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/attack-trace.json",
+     "sha256": ""
+    },
+    {
+     "kind": "LIVE",
+     "label": "Vault state",
+     "origin": "mirror",
+     "path": "evidence/post-attack-state.html",
+     "sha256": ""
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "CORROBORATION_SHORT",
+   "expect_verdict": "INCONCLUSIVE",
+   "note": "a confirmation may not rest on evidence whose bytes are not bound",
+   "reference": "0xa11ce",
+   "settle": false,
+   "summary": "The documents are live pages whose bytes nobody bound.",
+   "wallet": "carol"
+  },
+  {
+   "case": "EX09",
+   "challenge": "vaultlite",
+   "claimed_impact": "HIGH",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/other-pool-trace.json",
+     "sha256": "16801f6e1617c2aef6e320cf8ad71588a72d888d6b0812226708cbe4fe4708fa"
+    },
+    {
+     "kind": "PINNED",
+     "label": "Reserves after the transaction",
+     "origin": "mirror",
+     "path": "evidence/other-pool-state.html",
+     "sha256": "f7a5ced2a7d5472d6f64fb26e77b6572e7f18d64d06f96d1d42d5b240443783b"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "ATTACK_NOT_SHOWN",
+   "expect_verdict": "EXPLOIT_REJECTED",
+   "note": "an attack on something else is not an attack on this target",
+   "reference": "0xb0b0b0",
+   "settle": false,
+   "summary": "The trace is of a different deployment entirely.",
+   "wallet": "dave"
+  },
+  {
+   "case": "EX10",
+   "challenge": "vaultlite-single",
+   "claimed_impact": "LOW",
+   "evidence": [
+    {
+     "kind": "PINNED",
+     "label": "Execution trace",
+     "origin": "base",
+     "path": "evidence/deposit-trace.json",
+     "sha256": "acedc39d9b8809fdbdd36f4f3cec129f1f59ecfb619382d081550c7bcb560478"
+    },
+    {
+     "kind": "PINNED",
+     "label": "The published invariant",
+     "origin": "mirror",
+     "path": "evidence/invariants.html",
+     "sha256": "6ea9f274e19bfadfa0f15a447c82844aea8b0ca458d65a82905c241381d510ca"
+    }
+   ],
+   "expect_impact": "",
+   "expect_reason": "PROHIBITED_STATE_NOT_REACHED",
+   "expect_verdict": "EXPLOIT_REJECTED",
+   "note": "a challenge that asks for one origin still asks for the prohibited outcome; an ordinary deposit is not it",
+   "reference": "0xfeed01",
+   "settle": false,
+   "summary": "A deposit that moved 40 units, offered as an exploit.",
+   "wallet": "erin"
+  }
+ ],
+ "contest_case": "EX02",
+ "origins": [
+  "raw.githubusercontent.com",
+  "cdn.jsdelivr.net"
+ ]
+}

@@ -1,0 +1,10 @@
+{
+ "entries": [
+  "Transaction 0xdead01 called VaultLite.emergencyWithdraw from 0xbeef1234 and reverted with AccessControl: account is missing role GUARDIAN. No state changed.",
+  "status: reverted",
+  "gas used: 24110"
+ ],
+ "network": "testnet-fixture",
+ "note": "TEST / DEMONSTRATION ONLY - NOT FOR PRODUCTION. VaultLite is a fixture target that exists only in this repository's documents.",
+ "transaction": "0xdead01"
+}

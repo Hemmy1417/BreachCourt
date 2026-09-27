@@ -1,0 +1,9 @@
+{
+ "entries": [
+  "Transaction 0xfeed01 called VaultLite.deposit from 0xbeef1234 and completed; the vault's balance rose by 40 units.",
+  "status: success"
+ ],
+ "network": "testnet-fixture",
+ "note": "TEST / DEMONSTRATION ONLY - NOT FOR PRODUCTION. VaultLite is a fixture target that exists only in this repository's documents.",
+ "transaction": "0xfeed01"
+}

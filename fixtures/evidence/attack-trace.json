@@ -1,0 +1,10 @@
+{
+ "entries": [
+  "Transaction 0xa11ce called VaultLite.emergencyWithdraw from 0xbeef1234, an account that holds no GUARDIAN role, and the call completed without reverting.",
+  "status: success",
+  "gas used: 118204"
+ ],
+ "network": "testnet-fixture",
+ "note": "TEST / DEMONSTRATION ONLY - NOT FOR PRODUCTION. VaultLite is a fixture target that exists only in this repository's documents.",
+ "transaction": "0xa11ce"
+}

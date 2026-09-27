@@ -1,0 +1,9 @@
+{
+ "entries": [
+  "Reading A of transaction 0xc0ffee: 4,200 units left the vault and the caller's balance rose by the same amount.",
+  "status: success"
+ ],
+ "network": "testnet-fixture",
+ "note": "TEST / DEMONSTRATION ONLY - NOT FOR PRODUCTION. VaultLite is a fixture target that exists only in this repository's documents.",
+ "transaction": "0xc0ffee"
+}

@@ -1,0 +1,98 @@
+{
+ "vaultlite": {
+  "contest_window": 900,
+  "evidence_domains": [
+   "raw.githubusercontent.com",
+   "cdn.jsdelivr.net"
+  ],
+  "evidence_requirements": [
+   {
+    "description": "The evidence shows which account made the call and that it holds no GUARDIAN role.",
+    "required": true,
+    "requirement_id": "caller_role"
+   },
+   {
+    "description": "The evidence shows how much value left the vault and where it went.",
+    "required": true,
+    "requirement_id": "value_moved"
+   },
+   {
+    "description": "The evidence shows the caller's recorded claim, so the excess can be read.",
+    "required": false,
+    "requirement_id": "permitted_claim"
+   }
+  ],
+  "min_independent_origins": 2,
+  "name": "VaultLite emergency withdrawal",
+  "network_id": "testnet-fixture",
+  "resolve_window": 1800,
+  "security_property": "Only an account holding the GUARDIAN role may call emergencyWithdraw, and no caller may receive more than its recorded claim.",
+  "severity_bands": [
+   {
+    "band": "LOW",
+    "description": "Value at risk below the vault's documented buffer of 500 units."
+   },
+   {
+    "band": "HIGH",
+    "description": "The vault can be drained of user funds in a single transaction."
+   },
+   {
+    "band": "CRITICAL",
+    "description": "Funds are lost irrecoverably and the protocol cannot pause."
+   }
+  ],
+  "spec_version": 1,
+  "submission_deadline": "{deadline}",
+  "success_condition": "An account without the GUARDIAN role calls emergencyWithdraw and receives more than its recorded claim, and the vault's recorded balance falls accordingly.",
+  "target_identifier": "0x5AFe0000000000000000000000000000000000Fe",
+  "target_name": "VaultLite (fixture target)"
+ },
+ "vaultlite-single": {
+  "contest_window": 900,
+  "evidence_domains": [
+   "raw.githubusercontent.com",
+   "cdn.jsdelivr.net"
+  ],
+  "evidence_requirements": [
+   {
+    "description": "The evidence shows which account made the call and that it holds no GUARDIAN role.",
+    "required": true,
+    "requirement_id": "caller_role"
+   },
+   {
+    "description": "The evidence shows how much value left the vault and where it went.",
+    "required": true,
+    "requirement_id": "value_moved"
+   },
+   {
+    "description": "The evidence shows the caller's recorded claim, so the excess can be read.",
+    "required": false,
+    "requirement_id": "permitted_claim"
+   }
+  ],
+  "min_independent_origins": 1,
+  "name": "VaultLite emergency withdrawal, single origin",
+  "network_id": "testnet-fixture",
+  "resolve_window": 1800,
+  "security_property": "Only an account holding the GUARDIAN role may call emergencyWithdraw, and no caller may receive more than its recorded claim.",
+  "severity_bands": [
+   {
+    "band": "LOW",
+    "description": "Value at risk below the vault's documented buffer of 500 units."
+   },
+   {
+    "band": "HIGH",
+    "description": "The vault can be drained of user funds in a single transaction."
+   },
+   {
+    "band": "CRITICAL",
+    "description": "Funds are lost irrecoverably and the protocol cannot pause."
+   }
+  ],
+  "spec_version": 2,
+  "submission_deadline": "{deadline}",
+  "success_condition": "An account without the GUARDIAN role calls emergencyWithdraw and receives more than its recorded claim, and the vault's recorded balance falls accordingly.",
+  "target_identifier": "0x5AFe0000000000000000000000000000000000Fe",
+  "target_name": "VaultLite (fixture target)"
+ }
+}
