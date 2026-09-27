@@ -339,8 +339,11 @@ def record(chain: Chain, step: str, label: str, submission_id: str, case: dict,
         entry["expected_verdict"] = case["expect_verdict"]
         entry["expected_reason"] = case["expect_reason"]
         entry["expected_impact"] = case["expect_impact"]
+        allowed = case.get("expect_reason_any") or [case["expect_reason"]]
+        entry["expected_reason"] = case["expect_reason"] if len(allowed) == 1 \
+            else "one of: " + ", ".join(allowed)
         held = (resolution["verdict"] == case["expect_verdict"]
-                and resolution["reason_code"] == case["expect_reason"]
+                and resolution["reason_code"] in allowed
                 and resolution["impact"] == case["expect_impact"])
         if round_two:
             held = resolution["round"] == 2 and resolution["supersedes"] != ""

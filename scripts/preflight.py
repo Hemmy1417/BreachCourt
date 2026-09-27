@@ -23,7 +23,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-CONTRACT = ROOT / "contracts" / "succour.py"
+CONTRACT = ROOT / "contracts" / "breachcourt.py"
 RECORD = ROOT / "deploy" / "deployment.json"
 DOCS = [ROOT / "README.md", ROOT / "DECISION.md", ROOT / "SUBMISSION.md"] + \
     sorted((ROOT / "docs").glob("*.md"))
@@ -36,9 +36,25 @@ EXTERNAL = {"gen_getContractCode", "gen_getContractSchema", "run_nondet_unsafe",
             "raw_sha256", "content_digest", "grant_atto", "budget_atto",
             "max_grants_per_wallet", "max_age_seconds", "min_corroboration",
             "authority_domains", "assessment_window", "request_window",
-            "corroborating_sources", "corroboration_compared", "authorised_atto",
-            "TREASURY_SHORT", "NOT_AUTHORISED", "RESERVED"}
+            # this build's own names for fields and generator constants
+            "raw_sha256", "declared_sha256", "content_digest", "evidence_domains",
+            "min_independent_origins", "severity_bands", "evidence_requirements",
+            "submission_deadline", "resolve_window", "contest_window", "spec_version",
+            "target_identifier", "target_name", "network_id", "security_property",
+            "success_condition", "requirement_id", "claimed_impact", "attack_summary",
+            "attack_reference", "evidence_json", "challenge_json", "evidence_class",
+            "bytes_bound", "independent_origins", "corroboration_compared",
+            "claims_are_untested", "evidence_commitment", "evidence_digests",
+            "item_count", "resolution_id", "submission_id", "challenge_id",
+            "definition_hash", "reason_code", "verdict_version", "panel_state",
+            # FAILED_ATTEMPT_REASONS lives in scripts/generate_fixtures.py: it is the
+            # catalogue's tolerance for the one reason independent panels split on,
+            # not a contract symbol
+            "FAILED_ATTEMPT_REASONS"}
 ADDRESS = re.compile(r"0x[0-9a-fA-F]{40}(?![0-9a-fA-F])")
+# VaultLite is a fixture target that exists only in this repository's documents;
+# its identifier appears in the example challenge and has no deployment record
+FIXTURE_ADDRESSES = {"0x5AFe0000000000000000000000000000000000Fe"}
 
 
 def check(name: str, ok: bool, detail: str = ""):
@@ -90,7 +106,7 @@ def main():
           + (found.group(1) if found else "uncollected"))
 
     known = {a.lower() for a in json.loads((ROOT / "fixtures" / "wallets.json").read_text(
-        encoding="utf-8")).values()}
+        encoding="utf-8")).values()} | {a.lower() for a in FIXTURE_ADDRESSES}
     for record in list((ROOT / "deploy").rglob("*.json")):
         known |= {a.lower() for a in ADDRESS.findall(record.read_text(encoding="utf-8"))}
     stray = [p.name + ":" + a for p in DOCS if p.exists()

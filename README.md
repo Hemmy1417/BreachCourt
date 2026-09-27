@@ -14,7 +14,10 @@ machine-readable, consensus-backed security verdicts.**
 <!-- DEPLOYMENT:START -->
 ## Canonical deployment
 
-Filled from `deploy/deployment.json` once verified.
+[`0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D`](https://explorer-studio.genlayer.com/address/0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D) on GenLayer StudioNet (chain id 61999), from commit
+`e014836`, deployed source read back with `gen_getContractCode` and
+**byte-identical** to this repository. Deployment transaction
+[`0xc439649cb81eb86c70fc973c8fe8c26d57513fa94faafab7421cf160b3c3d621`](https://explorer-studio.genlayer.com/tx/0xc439649cb81eb86c70fc973c8fe8c26d57513fa94faafab7421cf160b3c3d621), FINALIZED, leader execution SUCCESS, votes AGREE x5.
 <!-- DEPLOYMENT:END -->
 
 ## The problem
@@ -206,7 +209,24 @@ insurance or governance processes.
 ## Verification
 
 <!-- VERIFIED:START -->
-Filled from the records once the live run of record is complete.
+| Check | Result |
+|---|---|
+| `python -m pytest tests/direct -q` | 136 passed |
+| pickling of the nondeterministic closures | checked (`direct_vm.check_pickling = True`) |
+| `genvm-lint check contracts/breachcourt.py --json` | lint ok (3 checks), validation ok, 23 methods (15 view, 8 write), exit 0 |
+| `ruff check .` | clean |
+| `python scripts/generate_fixtures.py --check` | 15 fixture files regenerate byte for byte |
+| `python scripts/mutation_check.py` | 75 mutations, **75 killed, 0 survived** |
+| `python scripts/deploy_studionet.py --verify` | deployed and repository sha256 equal, 23 schema methods |
+| `python -m pytest tests/integration -q` | 6 passed, 1 skipped (the opt-in live write) |
+| live run of record | 40 transactions, **24 of 26 outcomes held**, 10 of 10 refusals refused |
+
+All four verdicts were reached by real transactions against the canonical
+deployment, together with a contest, three finalisations, a lapse and ten
+refusals. The two outcomes that did not match the catalogue are the same
+model-variable line - which rejection reason evidence of a *failed* attempt earns -
+and the verdict was `EXPLOIT_REJECTED` both times:
+[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md#live-run-of-record).
 <!-- VERIFIED:END -->
 
 ## Reviewer fast path

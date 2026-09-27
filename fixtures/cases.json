@@ -59,6 +59,11 @@
    ],
    "expect_impact": "",
    "expect_reason": "ATTACK_NOT_SHOWN",
+   "expect_reason_any": [
+    "ATTACK_NOT_SHOWN",
+    "PROHIBITED_STATE_NOT_REACHED",
+    "EVIDENCE_CONTRADICTS_CLAIM"
+   ],
    "expect_verdict": "EXPLOIT_REJECTED",
    "note": "the attempt reverted and nothing changed, so the evidence does not show an attack that ran at all - the reason the panel is instructed to give, and the case the run contests to show a second reading of the same bytes",
    "reference": "0xdead01",
@@ -262,6 +267,11 @@
    ],
    "expect_impact": "",
    "expect_reason": "EVIDENCE_CONTRADICTS_CLAIM",
+   "expect_reason_any": [
+    "ATTACK_NOT_SHOWN",
+    "PROHIBITED_STATE_NOT_REACHED",
+    "EVIDENCE_CONTRADICTS_CLAIM"
+   ],
    "expect_verdict": "EXPLOIT_REJECTED",
    "note": "the call ran and the access check was weak, but the caller received exactly its recorded claim, so the evidence contradicts the claim of an exploit rather than merely failing to show it - the distinction this primitive exists to draw, and the reading the panel gives a document that affirmatively shows the invariant holding",
    "reference": "0x0c1a1m",

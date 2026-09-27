@@ -1,0 +1,157 @@
+75 mutations, 0 anchor problems
+accept-control: unmodified copy must pass ...
+control green; 75 mutations over 3 job(s)
+
+  [1/75] killed  : a 404 is a generic failure
+  [2/75] killed  : a redirect is read as a retrieved item
+  [3/75] killed  : a forbidden document is a generic failure
+  [4/75] killed  : a server error is a generic failure
+  [5/75] killed  : a binary content type is read
+  [6/75] killed  : an undecodable body is read
+  [7/75] killed  : scripts and styles count as text
+  [8/75] killed  : a document with no visible text is read
+  [9/75] killed  : an oversized document is not marked partial
+  [10/75] killed  : a pinned item's bytes are not checked against the declared digest
+  [11/75] killed  : a digest mismatch is judged by the panel anyway
+  [12/75] killed  : a round with no readable evidence is judged anyway
+  [13/75] killed  : evidence addressing the adjudicator is judged anyway
+  [14/75] killed  : text in the visible body is not scanned
+  [15/75] killed  : markup and attributes are not scanned
+  [16/75] killed  : the title is not scanned
+  [17/75] killed  : nothing is bound to a declared item, so bytes are neither compared nor stored
+  [18/75] killed  : a reading that bears on the verdict needs no quote
+  [19/75] killed  : a severity band needs no quote
+  [20/75] killed  : a spliced quote is accepted when the panel answers
+  [21/75] killed  : a code reason is overridden by the panel's reading
+  [22/75] killed  : a quote need not ground in the text this node retrieved
+  [23/75] killed  : a spliced quote passes the gate
+  [24/75] killed  : evidence addressing the adjudicator still reaches a verdict
+  [25/75] killed  : contradictory evidence is confirmed anyway
+  [26/75] killed  : an unusable panel answer reaches a verdict
+  [27/75] killed  : an attack that was not shown is confirmed
+  [28/75] killed  : an unclear attack is confirmed
+  [29/75] killed  : evidence contradicting the claim is confirmed
+  [30/75] killed  : a prohibited state that was not reached is confirmed
+  [31/75] killed  : an unclear prohibited state is confirmed
+  [32/75] killed  : a required evidence requirement that was not met is confirmed
+  [33/75] killed  : an unclear required requirement is confirmed
+  [34/75] killed  : an optional requirement blocks a confirmation
+  [35/75] killed  : the corroboration floor does not hold
+  [36/75] killed  : unbound bytes may carry a confirmation
+  [37/75] killed  : corroboration counts items, not distinct hosts
+  [38/75] killed  : a severity nobody could read is confirmed
+  [39/75] killed  : the consequence is not compared
+  [40/75] killed  : the leader's payload is gated against its own text, not this node's
+  [41/75] killed  : a challenge need not name its evidence sources
+  [42/75] killed  : a transient failure ratifies a different failure
+  [43/75] killed  : a requirement id may shadow a built-in subject
+  [44/75] killed  : a severity band may be NONE or UNCLEAR
+  [45/75] killed  : no evidence requirement need be required
+  [46/75] killed  : min_independent_origins may exceed the sources the challenge names
+  [47/75] killed  : challenge text may address the adjudicator
+  [48/75] killed  : a challenge may close in the past
+  [49/75] killed  : the windows are unbounded
+  [50/75] killed  : a pinned item needs no digest
+  [51/75] killed  : an IP literal is a host
+  [52/75] killed  : a live item may declare a digest it is not held to
+  [53/75] killed  : an item may come from any host at all
+  [54/75] killed  : the same document may be declared twice
+  [55/75] killed  : the attacker's own text is not checked
+  [56/75] killed  : the evidence list is unbounded
+  [57/75] killed  : the claimed impact need not be one of the challenge's bands
+  [58/75] killed  : a submission may be resolved twice
+  [59/75] killed  : a submission may be resolved after its window
+  [60/75] killed  : a verdict may be contested twice
+  [61/75] killed  : a verdict may be made final inside its contest window
+  [62/75] killed  : a stranger may contest a verdict
+  [63/75] killed  : a submission may lapse while its window is open
+  [64/75] killed  : a verdict may be contested after its window
+  [65/75] killed  : anyone may withdraw somebody else's submission
+  [66/75] killed  : anyone may cancel a challenge
+  [67/75] killed  : a challenge with submissions may be cancelled
+  [68/75] killed  : the challenge hash a submission commits to is not checked
+  [69/75] killed  : an attempt may be filed after the deadline
+  [70/75] killed  : one account may file twice against one challenge
+  [71/75] killed  : an attempt may be filed against a cancelled challenge
+  [72/75] killed  : a receipt stores a live item's bytes
+  [73/75] killed  : every reading is marked compared
+  [74/75] killed  : the open-submission cap does not hold
+  [75/75] killed  : the confirmed count is not corrected when a contest overturns
+
+killed:   a redirect is read as a retrieved item
+killed:   a 404 is a generic failure
+killed:   a forbidden document is a generic failure
+killed:   a server error is a generic failure
+killed:   a binary content type is read
+killed:   an undecodable body is read
+killed:   a document with no visible text is read
+killed:   scripts and styles count as text
+killed:   an oversized document is not marked partial
+killed:   a pinned item's bytes are not checked against the declared digest
+killed:   a digest mismatch is judged by the panel anyway
+killed:   a round with no readable evidence is judged anyway
+killed:   evidence addressing the adjudicator is judged anyway
+killed:   text in the visible body is not scanned
+killed:   markup and attributes are not scanned
+killed:   the title is not scanned
+killed:   nothing is bound to a declared item, so bytes are neither compared nor stored
+killed:   a reading that bears on the verdict needs no quote
+killed:   a severity band needs no quote
+killed:   a spliced quote is accepted when the panel answers
+killed:   a spliced quote passes the gate
+killed:   a quote need not ground in the text this node retrieved
+killed:   a code reason is overridden by the panel's reading
+killed:   evidence addressing the adjudicator still reaches a verdict
+killed:   an unusable panel answer reaches a verdict
+killed:   contradictory evidence is confirmed anyway
+killed:   an attack that was not shown is confirmed
+killed:   an unclear attack is confirmed
+killed:   evidence contradicting the claim is confirmed
+killed:   a prohibited state that was not reached is confirmed
+killed:   an unclear prohibited state is confirmed
+killed:   a required evidence requirement that was not met is confirmed
+killed:   an unclear required requirement is confirmed
+killed:   an optional requirement blocks a confirmation
+killed:   the corroboration floor does not hold
+killed:   unbound bytes may carry a confirmation
+killed:   corroboration counts items, not distinct hosts
+killed:   a severity nobody could read is confirmed
+killed:   the consequence is not compared
+killed:   the leader's payload is gated against its own text, not this node's
+killed:   a transient failure ratifies a different failure
+killed:   a challenge need not name its evidence sources
+killed:   a requirement id may shadow a built-in subject
+killed:   a severity band may be NONE or UNCLEAR
+killed:   no evidence requirement need be required
+killed:   min_independent_origins may exceed the sources the challenge names
+killed:   challenge text may address the adjudicator
+killed:   a challenge may close in the past
+killed:   the windows are unbounded
+killed:   an IP literal is a host
+killed:   a pinned item needs no digest
+killed:   a live item may declare a digest it is not held to
+killed:   an item may come from any host at all
+killed:   the same document may be declared twice
+killed:   the evidence list is unbounded
+killed:   the claimed impact need not be one of the challenge's bands
+killed:   the attacker's own text is not checked
+killed:   a submission may be resolved twice
+killed:   a submission may be resolved after its window
+killed:   a verdict may be contested twice
+killed:   a stranger may contest a verdict
+killed:   a verdict may be contested after its window
+killed:   a verdict may be made final inside its contest window
+killed:   a submission may lapse while its window is open
+killed:   anyone may withdraw somebody else's submission
+killed:   a challenge with submissions may be cancelled
+killed:   anyone may cancel a challenge
+killed:   an attempt may be filed after the deadline
+killed:   an attempt may be filed against a cancelled challenge
+killed:   the challenge hash a submission commits to is not checked
+killed:   one account may file twice against one challenge
+killed:   the open-submission cap does not hold
+killed:   a receipt stores a live item's bytes
+killed:   every reading is marked compared
+killed:   the confirmed count is not corrected when a contest overturns
+
+mutations: 75 killed, 0 survived, 0 anchor missing

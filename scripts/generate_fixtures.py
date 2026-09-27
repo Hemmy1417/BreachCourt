@@ -134,6 +134,16 @@ BANDS = [
 
 ORIGIN_DOMAINS = ["raw.githubusercontent.com", "cdn.jsdelivr.net"]
 
+# Evidence of a FAILED attempt earns one of two rejection reasons, and independent
+# panels choose between them differently: a document showing the guard holding can
+# be read as failing to show the prohibited state, or as contradicting the claim of
+# an exploit outright. Both are EXPLOIT_REJECTED - the decision does not move - so
+# the catalogue asserts the verdict strictly and accepts either reason, rather than
+# re-running a case until one panel agrees with a guess. Seen on chain in both
+# directions: deploy/diagnostics/pass2 and the run of record.
+FAILED_ATTEMPT_REASONS = ["ATTACK_NOT_SHOWN", "PROHIBITED_STATE_NOT_REACHED",
+                          "EVIDENCE_CONTRADICTS_CLAIM"]
+
 
 def challenge(name: str, origins: int = 2, **overrides) -> dict:
     spec = {
@@ -202,7 +212,8 @@ def build() -> tuple:
                       item("evidence/unchanged-state.html", "Vault state after the "
                            "transaction", origin="mirror")],
          "expect_verdict": "EXPLOIT_REJECTED",
-         "expect_reason": "ATTACK_NOT_SHOWN", "expect_impact": "",
+         "expect_reason": "ATTACK_NOT_SHOWN",
+         "expect_reason_any": FAILED_ATTEMPT_REASONS, "expect_impact": "",
          "settle": True, "contest": True,
          "note": "the attempt reverted and nothing changed, so the evidence does not show "
                  "an attack that ran at all - the reason the panel is instructed to give, "
@@ -278,7 +289,8 @@ def build() -> tuple:
                       item("evidence/within-claim-state.html", "Vault state after the "
                            "transaction", origin="mirror")],
          "expect_verdict": "EXPLOIT_REJECTED",
-         "expect_reason": "EVIDENCE_CONTRADICTS_CLAIM", "expect_impact": "",
+         "expect_reason": "EVIDENCE_CONTRADICTS_CLAIM",
+         "expect_reason_any": FAILED_ATTEMPT_REASONS, "expect_impact": "",
          "settle": False,
          "note": "the call ran and the access check was weak, but the caller received "
                  "exactly its recorded claim, so the evidence contradicts the claim of an "

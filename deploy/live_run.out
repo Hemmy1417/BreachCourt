@@ -1,0 +1,118 @@
+23:22:29 contract 0xcE067Ba556d3b456331aF5ae939c0DF9460aed9D phase full
+23:22:29 phase challenges
+23:22:29   challenge:vaultlite: publish_challenge as publisher
+23:23:14     FINALIZED/SUCCESS votes agree,idle,agree,agree,idle
+23:23:15     vaultlite -> BC-000005
+23:23:15   challenge:vaultlite-single: publish_challenge as publisher
+23:23:55     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+23:23:57     vaultlite-single -> BC-000006
+23:23:57 phase cases
+23:23:58   file:lapse: submit_attempt as stranger
+23:24:37     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+23:24:41   file:EX01: submit_attempt as a01
+23:25:21     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:25:23   resolve:EX01: resolve as keeper
+23:26:37     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+23:26:40     EX01: EXPLOIT_CONFIRMED/EXPLOIT_SHOWN/HIGH HELD
+23:26:42   file:EX02: submit_attempt as a02
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:27:27     FINALIZED/SUCCESS votes agree,agree,idle,agree,idle
+23:27:29   resolve:EX02: resolve as keeper
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:30:31     FINALIZED/SUCCESS votes agree,agree,agree,disagree,disagree
+23:30:39     EX02: EXPLOIT_REJECTED/EVIDENCE_CONTRADICTS_CLAIM/ MISSED
+23:30:39   contest:EX02: contest as a02
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:32:25     FINALIZED/SUCCESS votes agree,disagree,agree,agree,disagree
+23:32:28     EX02:contest: EXPLOIT_REJECTED/EVIDENCE_CONTRADICTS_CLAIM/ HELD
+23:32:30   file:EX03: submit_attempt as a03
+23:33:10     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:33:12   resolve:EX03: resolve as keeper
+23:34:16     FINALIZED/SUCCESS votes agree,idle,agree,idle,agree
+23:34:20     EX03: INCONCLUSIVE/EVIDENCE_CONTRADICTORY/ HELD
+23:34:22   file:EX04: submit_attempt as a04
+23:35:03     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+23:35:05   resolve:EX04: resolve as keeper
+23:35:44     FINALIZED/SUCCESS votes agree,agree,idle,idle,agree
+23:35:48     EX04: EVIDENCE_UNAVAILABLE/NO_EVIDENCE_READABLE/ HELD
+23:35:50   file:EX05: submit_attempt as a05
+23:36:29     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+23:36:31   resolve:EX05: resolve as keeper
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:37:11     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+    rpc transient on gen_call (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:37:21     EX05: EVIDENCE_UNAVAILABLE/EVIDENCE_DIGEST_MISMATCH/ HELD
+23:37:23   file:EX06: submit_attempt as a06
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:38:05     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+23:38:07   resolve:EX06: resolve as keeper
+23:38:53     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+23:38:57     EX06: INCONCLUSIVE/SOURCE_ADDRESSES_ADJUDICATOR/ HELD
+23:38:59   file:EX07: submit_attempt as a07
+23:39:39     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+23:39:41   resolve:EX07: resolve as keeper
+23:40:54     FINALIZED/SUCCESS votes idle,agree,agree,agree,idle
+23:40:57     EX07: INCONCLUSIVE/CORROBORATION_SHORT/ HELD
+23:40:59   file:EX08: submit_attempt as a08
+23:41:38     FINALIZED/SUCCESS votes agree,agree,idle,idle,agree
+23:41:39   resolve:EX08: resolve as keeper
+23:42:43     FINALIZED/SUCCESS votes agree,idle,agree,agree,idle
+23:42:47     EX08: INCONCLUSIVE/CORROBORATION_SHORT/ HELD
+23:42:49   file:EX11: submit_attempt as a11
+23:43:28     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:43:30   resolve:EX11: resolve as keeper
+23:44:37     FINALIZED/SUCCESS votes agree,agree,idle,agree,disagree
+23:44:41     EX11: EXPLOIT_REJECTED/PROHIBITED_STATE_NOT_REACHED/ MISSED
+23:44:42   file:EX09: submit_attempt as a09
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:45:20     FINALIZED/SUCCESS votes agree,agree,agree,agree,agree
+23:45:22   resolve:EX09: resolve as keeper
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:46:39     FINALIZED/SUCCESS votes idle,agree,idle,agree,agree
+23:46:43     EX09: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ HELD
+23:46:45   file:EX10: submit_attempt as a10
+23:47:23     FINALIZED/SUCCESS votes agree,idle,agree,idle,agree
+23:47:25   resolve:EX10: resolve as keeper
+23:48:41     FINALIZED/SUCCESS votes agree,disagree,agree,agree,idle
+23:48:45     EX10: EXPLOIT_REJECTED/ATTACK_NOT_SHOWN/ HELD
+23:48:45 phase settle
+23:48:47   finalize:EX01: finalize as keeper
+23:49:27     FINALIZED/SUCCESS votes agree,agree,idle,agree,idle
+23:49:31   finalize:EX02: finalize as keeper
+23:50:10     FINALIZED/SUCCESS votes idle,idle,agree,agree,agree
+    rpc transient on gen_call (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:50:20   finalize:EX03: finalize as keeper
+23:50:59     FINALIZED/SUCCESS votes idle,agree,agree,idle,agree
+23:51:03   waiting 184s for the resolve window of AT-000019
+23:53:03   waiting 64s for the resolve window of AT-000019
+23:54:08   lapse: lapse_submission as keeper
+23:54:47     FINALIZED/SUCCESS votes agree,agree,agree,idle,idle
+23:54:51   stats: {"challenges": 6, "confirmed": 3, "resolutions": 28, "submissions": 30}
+23:54:51 phase refusals
+23:54:53   refuse:wrong_hash: expecting a refusal of submit_attempt
+23:55:32     refused
+23:55:32   refuse:unknown_challenge: expecting a refusal of submit_attempt
+    rpc transient on eth_getTransactionReceipt (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:56:13     refused
+23:56:13   refuse:outside_domains: expecting a refusal of submit_attempt
+23:56:51     refused
+23:56:51   refuse:unknown_band: expecting a refusal of submit_attempt
+    rpc transient on eth_getTransactionCount (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+    rpc transient on eth_getTransactionByHash (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:57:37     refused
+23:57:37   refuse:duplicate_submission: expecting a refusal of submit_attempt
+23:58:16     refused
+23:58:16   refuse:cancel_with_submissions: expecting a refusal of cancel_challenge
+    rpc transient on eth_getTransactionReceipt (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+23:58:55     refused
+23:58:55   refuse:not_publisher_cancel: expecting a refusal of cancel_challenge
+    rpc transient on sim_getConsensusContract (1/8): Request to https://studio.genlayer.com/api failed: ('Connection aborted.', RemoteDisconnec; retry in 5s
+23:59:41     refused
+23:59:41   refuse:double_resolution: expecting a refusal of resolve
+00:00:21     refused
+00:00:21   refuse:stranger_contest: expecting a refusal of contest
+    rpc transient on eth_estimateGas (1/8): Request to https://studio.genlayer.com/api failed: HTTPSConnectionPool(host='studio.genlay; retry in 5s
+00:01:06     refused
+00:01:06   refuse:stranger_withdraw: expecting a refusal of withdraw_submission
+00:01:45     refused
+00:01:45 summary {"steps": 40, "transactions": 40, "outcomes_checked": 26, "outcomes_held": 24, "missed": ["resolve:EX02", "resolve:EX11"], "refusals": 10}

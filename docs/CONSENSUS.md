@@ -152,5 +152,39 @@ independent origins a confirmation rests on. Code owns all of that.
 <!-- LIVE:START -->
 ## Live findings
 
-Filled from the diagnostic pass and the live run of record.
+Three live passes ran against the canonical deployment; the first two are
+diagnostic evidence under `deploy/diagnostics/`, the third is the run of record.
+The contract was never changed in response to any of them - every fault was in the
+catalogue that drives the run, or in the runner itself.
+
+**What the panel proved it does.** Two independent origins, both hash-bound,
+produced a confirmation at a declared band. A document addressing the adjudicator
+stopped the round in code, with the marker recorded and the panel never convened. A
+declared digest that could not match the served bytes produced
+`EVIDENCE_UNAVAILABLE` with no panel at all. Two contradictory readings of one run
+produced `INCONCLUSIVE`. The same two documents that confirm an exploit produced
+`CORROBORATION_SHORT` when served from one host, and again when declared `LIVE`.
+
+**Where independent panels differ, and it matters to read this precisely.**
+Evidence of a *failed* attempt earns one of three rejection reasons, and the
+reasons swapped between passes on the same documents:
+
+| Case | Pass 2 | Run of record |
+|---|---|---|
+| a reverted `emergencyWithdraw` | `ATTACK_NOT_SHOWN` | `EVIDENCE_CONTRADICTS_CLAIM` |
+| a call that paid out exactly the recorded claim | `EVIDENCE_CONTRADICTS_CLAIM` | `PROHIBITED_STATE_NOT_REACHED` |
+
+The verdict was `EXPLOIT_REJECTED` in all four readings. The distinction between
+"the evidence does not show the prohibited outcome" and "the evidence shows the
+opposite" is a judgement about emphasis, not about whether the exploit succeeded,
+and honest models place it differently. Two consequences were taken:
+
+- the catalogue asserts the **verdict** strictly for those cases and accepts any of
+  the three reasons, with the tolerance named in the generator rather than hidden;
+- a consumer is told, in [`INTEGRATION.md`](INTEGRATION.md#reading-a-verdict-correctly),
+  to act on the verdict and to treat the reason as diagnostic.
+
+It would have been easy to re-run those two cases until a panel matched the
+guess. That is chasing variance, and the transcript is left as the chain answered
+it.
 <!-- LIVE:END -->

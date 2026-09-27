@@ -66,13 +66,24 @@ def test_at_least_one_case_of_each_verdict_is_exercised():
                    "EVIDENCE_DIGEST_MISMATCH", "SOURCE_ADDRESSES_ADJUDICATOR",
                    "CORROBORATION_SHORT"):
         assert reason in reasons, reason
-    # PROHIBITED_STATE_NOT_REACHED and the UNCLEAR reasons are exercised in Direct
-    # Mode and not in the live catalogue: an honest document either shows the
-    # invariant holding, which the panel reads as CONTRADICTED, or is silent about
-    # the outcome, which it reads as UNCLEAR. A live case for NOT_SHOWN would need
-    # a document written to produce a reading rather than to report a run, so the
-    # documents say what they say and the catalogue expects what follows.
-    assert "PROHIBITED_STATE_NOT_REACHED" not in reasons
+
+
+def test_the_cases_built_on_a_failed_attempt_accept_either_rejection_reason():
+    """Independent panels split on whether evidence of a failed attempt shows no
+    attack, an unreached prohibited state, or a contradiction of the claim - all
+    three were seen on chain across two passes, and the verdict was EXPLOIT_REJECTED
+    every time. Those cases therefore assert the verdict and accept any of the three
+    reasons; every other case asserts one exact reason."""
+    tolerant = [c for c in CASES["cases"] if c.get("expect_reason_any")]
+    assert len(tolerant) == 2
+    for case in tolerant:
+        assert case["expect_verdict"] == "EXPLOIT_REJECTED", case["case"]
+        assert case["expect_reason"] in case["expect_reason_any"], case["case"]
+        assert set(case["expect_reason_any"]) == {
+            "ATTACK_NOT_SHOWN", "PROHIBITED_STATE_NOT_REACHED",
+            "EVIDENCE_CONTRADICTS_CLAIM"}, case["case"]
+    strict = [c for c in CASES["cases"] if not c.get("expect_reason_any")]
+    assert len(strict) == 9
 
 
 def test_every_declared_digest_is_the_digest_of_the_document_that_is_served():

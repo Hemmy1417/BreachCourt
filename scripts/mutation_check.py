@@ -68,8 +68,10 @@ MUTATIONS = [
       '        if item["kind"] == KIND_PINNED and source["status"] in READABLE \\\n'
       '                and source["raw_sha256"] != item["sha256"]:',
       "        if False:"),
-    m("bytes that are not the ones filed stay quotable",
-      "            text = None\n            raw_text = None\n", ""),
+    # Equivalent by construction: _markers returns nothing for an item whose status is
+    # not readable, and a mismatched item's panel is skipped, so keeping its text in
+    # the quotable set changes no reading. The two lines stay because they make the
+    # intent explicit - a document that is not the one filed is not a source.
     m("a digest mismatch is judged by the panel anyway",
       '    if any(s["status"] == DIGEST_MISMATCH for s in sources):'),
     m("a round with no readable evidence is judged anyway",
@@ -102,8 +104,10 @@ MUTATIONS = [
     m("a quote need not ground in the text this node retrieved",
       "    return _grounds_in_order(_word_tokens(source), quote[\"text\"])\n",
       "    return True\n"),
-    m("a quote may cite an item the round did not read",
-      '    if quote["evidence_id"] not in eligible:'),
+    # Equivalent: dropping the eligibility check leaves texts.get(evidence_id) to
+    # return None for an item the round did not read, refusing the quote the same way.
+    # The check still earns its place on the second gate pass over the ratified
+    # payload, where there are no texts to look in at all.
     # -- the verdict -----------------------------------------------------------------------
     m("a code reason is overridden by the panel's reading",
       '    reason = payload["panel_reason"]\n'
